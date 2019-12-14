@@ -1,0 +1,35 @@
+@startuml
+
+title TAG layered architecture - 1 -
+
+package "User Interface Layer" {
+    [Display]
+    [Keypad]
+}
+
+package "System Control Layer" {
+    [FSM] #red
+}
+
+package "Subsystems Layer" {
+    [Temperature control]
+    [Light control]
+    [Water control]
+}
+
+package "Hardware Abstraction Layer" {
+    [Hardware IO]
+}
+
+[FSM] -down-> [Light control]
+[FSM] -down-> [Temperature control]
+[FSM] -down-> [Water control]
+[FSM] -up-> [Display]
+[FSM] -up-> [Keypad]
+[Light control] --> [Hardware IO]
+[Temperature control] --> [Hardware IO]
+[Water control] --> [Hardware IO]
+[Display] --> [Hardware IO]
+[Keypad] --> [Hardware IO]
+
+@enduml

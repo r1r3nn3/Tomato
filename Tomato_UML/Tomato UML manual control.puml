@@ -1,0 +1,41 @@
+@startuml
+
+title Tomato - The Automatic Greenhouse, Service mode
+
+[*] --> ServiceMenu : E_SERVICE_CONTROL / DSPserviceMenu();
+ServiceMenu --> WaitForEvent : E_SERVICE_CONTROL_OFF / SCallOff();
+
+ServiceMenu --> AddPlantType : E_ADD_PLANT_TYPE / DSPserviceAddPlantType();
+AddPlantType --> SetPlantName : E_SET_PLANT_NAME
+SetPlantName : ? (sizeoff(plantName)/sizeoff(plantName[1])) <= 10;
+SetPlantName --> SetPlantName : E_NON_VALID_VALUE / currentEvent = prevEvent;
+SetPlantName --> SetWaterLevel : E_SET_WATER_LEVEL / DSPserviceSetWaterLevel();
+SetWaterLevel : ? WaterLevel >= 0 && WaterLevel <= 100;
+SetWaterLevel --> SetWaterLevel : E_NON_VALID_VALUE / currentEvent = prevEvent;
+SetWaterLevel --> SetLightHours : E_SET_MIN_TEMP / DSPserviceSetLightHours();
+SetLightHours : ? LightHours <= 24 && LightHours >= 0;
+SetLightHours --> SetLightHours : E_NON_VALID_VALUE / currentEvent = prevEvent;
+SetLightHours --> SetMinTemperature : E_SET_MIN_TEMP / DSPserviceTemp(min);
+SetMinTemperature : ? MinTemp >= 0 && MinTemp <= 49;
+SetMinTemperature --> SetMinTemperature : E_NON_VALID_VALUE / currentEvent = prevEvent;
+SetMinTemperature --> SetMaxTemperature : E_SET_MAX_TEMP / DSPserviceTemp(max);
+SetMaxTemperature : MaxTemp >= MinTemp && MaxTemp <= 50;
+SetMaxTemperature --> SetMaxTemperature : E_NON_VALID_VALUE / currentEvent = prevEvent;
+SetMaxTemperature --> ServiceMenu : E_SAVE_NEW_PLANT / writeToCSV(waterLevel, lightHours, maxTemp, minTemp)
+
+
+AddPlantType --> ServiceMenu : E_SERVICE_CONTROL / saveNewPlantType();
+
+ServiceMenu --> SelectActivePlantType : E_SELLECT_ACTIVE_PLANT / DSPselectPlantType();
+SelectActivePlantType --> ServiceMenu : E_SET_ACTIVE_PLANT / loadPlant(selectedPlant);
+
+ServiceMenu --> WaterControl : E_WATER_CONTROL_ON / WCwaterOn();
+WaterControl --> ServiceMenu : E_WATER_CONTROL_OFF / WCwaterOff();
+
+ServiceMenu --> LightControl : E_LIGHT_ON / LClightOn();
+LightControl --> ServiceMenu : E_LIGHT_OFF / LClightOff();
+
+ServiceMenu --> HeaterControl : E_HEATER_ON / HCheaterOn();
+HeaterControl --> ServiceMenu : E_HEATER_OFF / HCheaterOff();
+
+@enduml

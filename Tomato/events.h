@@ -1,0 +1,35 @@
+#ifndef EVENTS_H
+#define EVENTS_H
+
+// used for initialisation of an event variable
+typedef enum {
+    E_NO,
+    E_START,
+    E_CONTINUE,
+    E_WATER_PLANT_LOW,
+    E_WATERING_INTERFALL,
+    E_WATERING,
+    E_TEMP_OVER_MAX,
+    E_TEMP_OVER_MIN,
+    E_TEMP_ADJUST,
+    E_LIGHT_ON,
+    E_LIGHT_OFF,
+    E_SERVICE_MODE,
+    E_SERVICE_MODE_OFF,
+    E_SELLECT_ACTIVE_PLANT,
+    E_SET_ACTIVE_PLANT,
+    E_WATER_CONTROL_ON,
+    E_WATER_CONTROL_OFF,
+    E_HEATER_ON,
+    E_HEATER_OFF,
+    E_ADD_NEW_PLANT,
+    E_SET_PLANT_NAME,
+    E_SET_WATER_LEVEL,
+    E_SET_LIGHT_HOURS,
+    E_SET_MIN_TEMP,
+    E_SET_MAX_TEMP,
+    E_NON_VALID_VALUE,
+    E_SAVE_NEW_PLANT
+} event_e;
+
+#endif // EVENTS_H

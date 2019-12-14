@@ -1,0 +1,41 @@
+@startuml
+
+title Tomato - The Automatic Greenhouse
+
+[*] --> Initialised : E_START / APGinitialise()
+Initialised : WCinit();
+Initialised : TCinit();
+Initialised : LCinit();
+Initialised --> WaitForEvent : E_CONTINUE
+
+WaitForEvent --> WateringControl : E_WATER_PLANT_LOW
+WaitForEvent --> WateringControl : E_WATERING_INTERFALL
+WateringControl --> WaitForEvent : E_WATERING / WwaterPlant();
+WateringControl : wateringTimer = 0;
+
+WaitForEvent --> TemperatureControl : E_TEMP_OVER_MAX
+WaitForEvent --> TemperatureControl : E_TEMP_OVER_MIN
+TemperatureControl --> WaitForEvent : E_TEMP_ADJUST / TadjustTemperatur(prevState)
+
+WaitForEvent --> LightingControl : E_LIGHT_ON
+WaitForEvent --> LightingControl : E_LIGHT_OFF
+LightingControl --> WaitForEvent : E_LIGHT_ADJUST / LadjustLight(prevState);
+
+
+note right of Initialised
+    // Watering subsystem:
+    WATERING_INTERFAL = 21 600 000;  //in mS
+    WATERING_TIME = 30 000;          //in mS
+    wateringTimer = 0;               //in mS
+    waterLevelPlant = 0;             //in %
+    // TemperatureControl subsystem:
+    currentTemperature = 0;          //in degree C
+    MAX_TEMP = 25;                   //in degree C
+    MIN_TEMP = 18;                   //in degree C
+    // Lighting subsystem:
+    LIGHT_HOURS = 28 800 000;        //in mS per day
+    lightLevel = 0;                  //in % or lumen maybe?
+end note
+
+
+@enduml

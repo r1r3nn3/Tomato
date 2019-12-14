@@ -1,0 +1,19 @@
+/*!
+
+\mainpage Documentation application
+
+\section sec1 How to compile CVM-4
+
+The text console application CVM-4 is developed using QtCreator in a C project.
+
+Use C11 as a compiler option in the CVM-4.pro file:
+\verbatim CONFIG += c11 \endverbatim
+
+Press the green button down left to the editor for compiling the code project.
+
+\section sec2 User manual
+Start CVM4 as follows: ...
+\image html startCVM.png "Console output after starting"
+\todo Write a complete user manual.
+
+*/

@@ -1,0 +1,33 @@
+@startuml
+
+title CVM layered architecture - 1 -
+
+package "User Interface Layer" {
+    [Display]
+    [Keyboard]
+}
+
+package "System Control Layer" {
+    [FSM] #red
+}
+
+package "Subsystems Layer" {
+    [Display]
+    [Cola Dispenser]
+    [Coin Acceptor]
+}
+
+package "Hardware Abstraction Layer" {
+    [Hardware IO]
+}
+
+[FSM] -down-> [Coin Acceptor]
+[FSM] -down-> [Cola Dispenser]
+[FSM] -up-> [Display]
+[FSM] -up-> [Keyboard]
+[Coin Acceptor] --> [Hardware IO]
+[Cola Dispenser] --> [Hardware IO]
+[Display] --> [Hardware IO]
+[Keyboard] --> [Hardware IO]
+
+@enduml
