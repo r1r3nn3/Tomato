@@ -7,13 +7,3 @@ Teacher:        Jos Onokiewicz
 Date:           21-11-2019
 */
 
-#include <stdio.h>
-#include <strings.h>
-#include <Subsystems.h>
-#include <Subsystems.h>
-
-
-int main()
-{
-
-}

@@ -8,12 +8,15 @@ Date:           21-11-2019
 */
 
 #include "fsm.h"
+#include "display.h"
 
 int main()
 {
     event_e currentEvent = E_START;
     event_e prevEvent;
 
+    DSPsystemInfo();
+    /*
     // Update loop
     while(1){
         prevEvent = currentEvent;
@@ -21,6 +24,6 @@ int main()
 
         evenHandler(currentEvent);
     }
-
+*/
     return 0;
 }

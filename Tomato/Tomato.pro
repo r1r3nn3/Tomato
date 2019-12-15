@@ -10,6 +10,7 @@ SOURCES += \
         keyboard.c \
         light_control.c \
         main.c \
+        service_control.c \
         temperature_control.c \
         water_control.c
 
@@ -19,5 +20,6 @@ HEADERS += \
     fsm.h \
     keyboard.h \
     light_control.h \
+    service_control.h \
     temperature_control.h \
     water_control.h

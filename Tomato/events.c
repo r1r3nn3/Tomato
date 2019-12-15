@@ -1,19 +1,8 @@
-/*
-Create by:      Alwin Rodewijk
-Student nr:     635653
-Class:          ENG-D-B1-ELTa
-Subject:        D-B-INSE-O
-Teacher:        Jos Onokiewicz
-Date:           21-11-2019
-*/
-
-#include <stdio.h>
-#include <strings.h>
-#include <Subsystems.h>
-#include <Subsystems.h>
+#include "fsm.h"
+#include "display.h"
+#include "light_control.h"
+#include "temperature_control.h"
+#include "water_control.h"
+#include "service_control.h"
 
 
-int main()
-{
-
-}
