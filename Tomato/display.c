@@ -1,15 +1,16 @@
 #include "string.h"
 #include "stdio.h"
-#include "stdbool.h"
-#include "time.h"
-#include "math.h"
+#include "stdbool.h"    // temp
+#include "time.h"       // for time object TODO
+#include "math.h"       // temp
 
+// temp active greenhouse data
 int tempWaterLevel = 70;
 double tempTemperature = 26.5;
 bool tempLight = true;
-double tempTime = 12.50;    // because of convertion to int 0.xx1 is added, probebly because the actual value of 0.xx is smaller
-                            // also maybe use a actual time object?
+double tempTime = 12.50;    // also maybe use a actual time object?
 
+// temp active plant data
 char tempActivePlantType[10] = "Tomato";
 int tempActiveMaxWaterLevel = 70;
 double tempActiveMaxTemperature = 29;
@@ -22,13 +23,13 @@ void calculateTime(double time){
     currentTime[0] = (char)((time/10)+48);
     currentTime[1] = (char)((int)time%10)+48;
     currentTime[2] = ':';
-    double timeMinutes = fmod(time*100, 100)*0.6;
-    currentTime[3] = (char)(timeMinutes / 10 + 48);
-    currentTime[4] = (char)(fmod(timeMinutes, 10) + 48);
+    time = fmod(time*100, 100)*0.6;
+    currentTime[3] = (char)(time / 10 + 48);
+    currentTime[4] = (char)(fmod(time, 10) + 48);
 }
 
 void DSPinitialise(void){
-    printf("Display initialised");
+    printf("Initialised: Display");
 }
 
 void DSPsystemInfo(){
@@ -54,19 +55,30 @@ void DSPsystemInfo(){
     printf("Light \t\t %s \t\t\t Min Temperature \t %.1lf C \n", lightOnOff, tempActiveMinTemperature);
     printf("Time \t\t %s \t\t\t Light hours \t\t %i \n", currentTime, tempActiveLightHours);
     printf("-------------------------------------------------------------------------\n");
+    printf("Enter 'help' followed by 'return' to show the available actions.\n");
+    printf("-------------------------------------------------------------------------\n");
 
+}
+
+void DSPhelp(){
+    printf("--- Help menu ---\n");
+    printf("You can use the following commands followed by 'return' to activate the actions:\n");
+    printf("'c' to clear the display from previous messages, this will not remove them from the log file,\n");
+    printf("''\n");
+    printf("\n");
 }
 
 void DSPshow(const char *text){
-
+    printf("%s\n");
 }
-void DSPdebugSystemInfo(const char *text){
 
+void DSPdebugSystemInfo(const char *text){
+    printf("%s\n");
 }
 void DSPsimulationSystemInfo(const char *text){
-
+    printf("%s\n");
 }
 void DSPshowSystemError(const char *text){
-
+    printf("%s\n");
 }
 
