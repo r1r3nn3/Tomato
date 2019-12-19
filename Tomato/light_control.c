@@ -7,3 +7,8 @@ Teacher:        Jos Onokiewicz
 Date:           21-11-2019
 */
 
+#include "display.h"
+
+void LCinitialise(void){
+    DSPshow("Initialised: Light control");
+}

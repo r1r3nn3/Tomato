@@ -16,6 +16,8 @@ int main()
     event_e prevEvent;
 
     DSPsystemInfo();
+    DSPhelp();
+    DSPserviceInfo();
     /*
     // Update loop
     while(1){

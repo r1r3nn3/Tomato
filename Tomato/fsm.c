@@ -50,6 +50,7 @@ event_e generateEven(void)
     case S_LIGHTING_CONTROL:
         break;
     case S_SERVICE_MENU:
+        DSPshow("");
         break;
     case S_SELECT_ACTIVE_PLANT_TYPE:
         break;

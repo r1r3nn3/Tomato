@@ -3,5 +3,6 @@
 
 //-----------------Watering Control-----------------//
 void WCinitialise(void);
+void WCcheckWaterRequirements(void);
 
 #endif // WATER_CONTROL_H
