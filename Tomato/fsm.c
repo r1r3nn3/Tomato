@@ -1,9 +1,25 @@
+/*
+Create by:      Alwin Rodewijk
+Student nr:     635653
+Class:          ENG-D-B1-ELTa
+Subject:        D-B-INSE-O
+Teacher:        Jos Onokiewicz
+Date:           21-11-2019
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "stdbool.h"
+#include "string.h"
+
 #include "fsm.h"
 #include "display.h"
 #include "light_control.h"
 #include "temperature_control.h"
 #include "water_control.h"
 #include "service_control.h"
+#include "plant.h"
+#include "local_time.h"
 
 typedef enum {
     S_NO,
@@ -22,53 +38,114 @@ typedef enum {
     S_SET_PLANT_MAX_TEMPERATURE
 } state_e;
 
-state_e currentState = S_START;
-state_e previousState = S_START;
-event_e currentEvent = E_NO;
-event_e previousEvent = E_NO;
+static event_e currentEvent = E_NO;
+static event_e previousEvent = E_NO;
+static state_e currentState = S_START;
+static state_e previousState = S_START;
 
+// TODO: get this information from a file
+void FSMinitialise(void){
+    DSPshow("Initialised: Finite state machine");
+}
 
-event_e generateEven(void)
+event_e generateEvent(void)
 {
     event_e evnt = E_NO;
 
-    switch (currentEvent)
+    previousEvent = currentEvent;
+
+    switch (currentState)
     {
     case S_NO:
         // TODO: trow error
         break;
+
     case S_START:
+        DSPinitialise();
+        PTinitialise();
+        FSMinitialise();
+        LTinitialise();
+        LCinitialise();
+        TCinitialise();
+        WCinitialise();
+        DSPshow("");
+        DSPsystemInfo();
         break;
+
     case S_WAIT_FOR_EVENT:
+        // check for correct light state
+        if(LClightCheck()){
+            evnt = E_LIGHT_TOGGLE;
+            break;
+        }
+
+        // check if watering is required
+
+        // check if heater needs to be toggled
+        if(TCtemperatureCheck() != 0){
+            if(TCtemperatureCheck() == -1 && TCgetHeaterState()){
+                evnt = E_HEATER_TOGGLE;
+                break;
+            }
+            if(TCtemperatureCheck() == 1 && !TCgetHeaterState()){
+                evnt = E_HEATER_TOGGLE;
+                break;
+            }
+        }
+
         evnt = E_CONTINUE;
         break;
-    case S_WATERING_CONTROL:
 
+    case S_WATERING_CONTROL:
+        WCwaterPlant();
         break;
+
     case S_TEMPERATURE_CONTROL:
         break;
+
     case S_LIGHTING_CONTROL:
         break;
+
     case S_SERVICE_MENU:
         break;
+
     case S_SELECT_ACTIVE_PLANT_TYPE:
         break;
+
     case S_ADD_PLANT_TYPE:
         break;
+
     case S_SET_PLANT_NAME:
         break;
+
     case S_SET_PLANT_WATER_LEVEL:
         break;
+
     case S_SET_PLANT_LIGHT_HOURS:
         break;
+
     case S_SET_PLANT_MIN_TEMPERATURE:
         break;
+
     case S_SET_PLANT_MAX_TEMPERATURE:
         break;
     }
 
     return evnt;
 }
+
+void eventHandler(event_e event){
+
+    state_e nextState = S_NO;
+
+    switch(currentState){
+
+    default:
+        break;
+    }
+}
+
+
 /*
 E_NO,
 E_START,

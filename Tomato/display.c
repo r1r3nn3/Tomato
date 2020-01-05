@@ -1,40 +1,43 @@
+/*
+Create by:      Alwin Rodewijk
+Student nr:     635653
+Class:          ENG-D-B1-ELTa
+Subject:        D-B-INSE-O
+Teacher:        Jos Onokiewicz
+Date:           21-11-2019
+*/
+
+#include <stdio.h>
+#include "stdbool.h"
 #include "string.h"
-#include "stdio.h"
-#include "stdbool.h"    // temp
-#include "time.h"       // for time object TODO
-#include "math.h"       // temp
+#include "stdbool.h"
+#include "time.h"
+
+#include "display.h"
+#include "plant.h"
+#include "local_time.h"
+#include "water_control.h"
+
 
 // temp active greenhouse data
-int tempWaterLevel = 70;
-double tempTemperature = 26.5;
-bool tempLight = true;
-double tempTime = 12.50;    // also maybe use a actual time object?
+static int tempWaterLevel = 70;
+static double tempTemperature = 26.5;
+static bool tempLight = true;
 
 // temp active plant data
-char tempActivePlantType[10] = "Tomato";
-int tempActiveMaxWaterLevel = 70;
-double tempActiveMaxTemperature = 29;
-double tempActiveMinTemperature = 22;
-int tempActiveLightHours = 12;
-
-char currentTime[6] = {"00:00"};
-
-void calculateTime(double time){
-    currentTime[0] = (char)((time/10)+48);
-    currentTime[1] = (char)((int)time%10)+48;
-    currentTime[2] = ':';
-    time = fmod(time*100, 100)*0.6;
-    currentTime[3] = (char)(time / 10 + 48);
-    currentTime[4] = (char)(fmod(time, 10) + 48);
-}
+static char tempActivePlantType[10] = "Tomato";
+static int tempActiveMaxWaterLevel = 70;
+static double tempActiveMaxTemperature = 29;
+static double tempActiveMinTemperature = 22;
+static int tempActiveLightHours = 12;
 
 void DSPinitialise(void){
-    printf("Initialised: Display");
+    DSPshow("Initialised: Display");
 }
 
 void DSPsystemInfo(){
     // clear screen
-    system("cls");
+    //system("cls");
 
    // set text for light state
     static char lightOnOff[4];
@@ -44,16 +47,17 @@ void DSPsystemInfo(){
         strcpy(lightOnOff, "Off");
     }
 
-    // set time in right format
-    calculateTime(tempTime);
+    // get time ready to print
+    char timeBuffer[TIME_BUFFER_SIZE];
+    LTgetTime(timeBuffer);
 
     // print the menu
     printf("\t\t\tTOMATO - THE AUTOMATIC GREENHOUSE \n\n");
     printf("Current values: \t\t\t Active plant \t\t %s \n", tempActivePlantType);
-    printf("Water level \t %i %c \t\t\t Water level max \t %i %c \n", tempWaterLevel, '%', tempActiveMaxWaterLevel, '%');
+    printf("Water level \t %i %c \t\t\t Water level max \t %i %c \n", WCgetPlantWaterLevel(), '%', tempActiveMaxWaterLevel, '%');
     printf("Temperature \t %.1lf C \t\t Max temperature \t %.1lf C \n", tempTemperature, tempActiveMaxTemperature);
     printf("Light \t\t %s \t\t\t Min Temperature \t %.1lf C \n", lightOnOff, tempActiveMinTemperature);
-    printf("Time \t\t %s \t\t\t Light hours \t\t %i \n", currentTime, tempActiveLightHours);
+    printf("Time \t\t %s \t\t\t Light hours \t\t %i \n", timeBuffer, tempActiveLightHours);
     printf("-------------------------------------------------------------------------\n");
     printf("Enter 'help' followed by 'return' to show the available actions.\n");
     printf("-------------------------------------------------------------------------\n");
@@ -68,17 +72,23 @@ void DSPhelp(){
     printf("\n");
 }
 
-void DSPshow(const char *text){
-    printf("%s\n");
+void DSPshow(const char *text)
+{
+   printf("## %-" DISPLAY_SIZE_STR "s ##\n", text);
 }
 
-void DSPdebugSystemInfo(const char *text){
-    printf("%s\n");
+void DSPdebugSystemInfo(const char *text)
+{
+   printf("-- DEBUG %-" DISPLAY_SIZE_STR "s\n", text);
 }
-void DSPsimulationSystemInfo(const char *text){
-    printf("%s\n");
+
+void DSPsimulationSystemInfo(const char *text)
+{
+   printf("-- SIMULATION %-" DISPLAY_SIZE_STR "s\n", text);
 }
-void DSPshowSystemError(const char *text){
-    printf("%s\n");
+
+void DSPshowSystemError(const char *text)
+{
+   printf("## SYSTEM ERROR %-" DISPLAY_SIZE_STR "s ##\n", text);
 }
 

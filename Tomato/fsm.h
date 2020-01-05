@@ -5,7 +5,7 @@
 
 event_e generateEvent(void);
 void evenHandler(event_e evnt);
-
+void FSMinitialise(void);
 
 
 #endif // FSM_H

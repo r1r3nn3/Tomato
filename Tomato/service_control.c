@@ -7,3 +7,5 @@ Teacher:        Jos Onokiewicz
 Date:           21-11-2019
 */
 
+#include <stdio.h>
+#include "stdbool.h"

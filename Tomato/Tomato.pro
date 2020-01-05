@@ -5,11 +5,12 @@ CONFIG -= qt
 
 SOURCES += \
         display.c \
-        events.c \
         fsm.c \
         keyboard.c \
         light_control.c \
+        local_time.c \
         main.c \
+        plant.c \
         service_control.c \
         temperature_control.c \
         water_control.c
@@ -20,6 +21,8 @@ HEADERS += \
     fsm.h \
     keyboard.h \
     light_control.h \
+    local_time.h \
+    plant.h \
     service_control.h \
     temperature_control.h \
     water_control.h
