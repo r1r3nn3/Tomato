@@ -20,4 +20,4 @@ void DSPserviceInfo(void);
 void calculateTime(double);
 void DSPprintSeperator(void);
 
-#endif
+#endif // DISPLAY_H
