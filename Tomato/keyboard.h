@@ -22,4 +22,6 @@ char KYBgetchar(void);
 char* KYBgetString(void);
 int KYBgetint(int ifWrongValue);
 
+#define INPUT_BUFFER_SIZE 10
+
 #endif // KEYBOARD_H

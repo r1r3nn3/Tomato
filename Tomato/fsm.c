@@ -107,6 +107,7 @@ event_e generateEvent(void)
         break;
 
     case S_SERVICE_MENU:
+        DSPshow("");
         break;
 
     case S_SELECT_ACTIVE_PLANT_TYPE:
