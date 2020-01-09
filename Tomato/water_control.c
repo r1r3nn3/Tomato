@@ -29,6 +29,11 @@ void WCinitialise(void){
 
 void WCtogglePump(void){
     pumpState = !pumpState;
+    if(pumpState){
+        DSPshow("Pump state: on");
+    } else {
+        DSPshow("Pump state: off");
+    }
 }
 
 bool WCgetPumpState(void){
@@ -42,7 +47,7 @@ unsigned int WCgetPlantWaterLevel(void){
 void WCwaterPlant(void){
     wateringTimer = LTgetTimeObject();
     plantWaterLevel = PTgetWaterLevelMax();
-    DSPshow("Water control: Watering");
+    DSPshow("Watering done");
 }
 
 bool WCwateringCheck(void){
@@ -61,6 +66,6 @@ bool WCwateringCheck(void){
     return returnValue;
 }
 
-void WCchangeTemperature(void){
+void WCchangeWaterLevel(void){
     plantWaterLevel -= (rand() % 10) / 3;
 }
