@@ -12,6 +12,8 @@ int PTgetTempMax(void);
 int PTgetTempMin(void);
 unsigned int PTgetWaterLevelMax(void);
 int PTgetLightHours(void);
+void PTchangePlant(void);
+void PTnewPlant(void);
 
 typedef struct {
     char name[20];

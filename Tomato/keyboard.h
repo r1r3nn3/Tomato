@@ -4,7 +4,6 @@
 //--------------------keyboard--------------------//
 
 typedef enum{
-    A_NO,
     A_EXIT,
     A_HELP,
     A_UPDATE,
@@ -14,13 +13,15 @@ typedef enum{
     A_HEATER,
     A_PUMP,
     A_CHANGE,
-    A_ADD
-} e_actions;
+    A_ADD,
+    A_NO
+} actions_e;
 
 void KYBinitialise(void);
 char KYBgetchar(void);
 char* KYBgetString(void);
 int KYBgetint(int ifWrongValue);
+actions_e KYBgetAction(void);
 
 #define INPUT_BUFFER_SIZE 10
 

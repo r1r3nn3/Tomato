@@ -16,14 +16,15 @@ Date:           21-11-2019
 #include "display.h"
 
 #define BUFFER_SIZE 30
-#define NUMBER_OF_ACTIONS 10
+#define NUMBER_OF_ACTIONS 11
 
-/* Must match with enum e_actions */
+/* Must match with enum actions_e */
 const char actions [NUMBER_OF_ACTIONS][BUFFER_SIZE] = {
     "exit",
     "help",
     "update",
     "service",
+    "user",
     "time",
     "light",
     "heater",
@@ -79,8 +80,8 @@ int KYBgetint(int ifWrongValue){
 
 
 // Recomendation: use hash table or dictionary
-e_actions KYBgetAction(void){
-    e_actions returnValue = A_NO;
+actions_e KYBgetAction(void){
+    actions_e returnValue = A_NO;
 
     bool gettingAction = true;
 

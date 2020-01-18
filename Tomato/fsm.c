@@ -20,6 +20,7 @@ Date:           21-11-2019
 #include "service_control.h"
 #include "plant.h"
 #include "local_time.h"
+#include "keyboard.h"
 
 typedef enum {
     S_NO,
@@ -43,7 +44,8 @@ static event_e previousEvent = E_NO;
 static state_e currentState = S_START;
 static state_e previousState = S_START;
 
-// TODO: get this information from a file
+int timeToPass = 0;
+
 void FSMinitialise(void){
     DSPshow("Initialised: Finite state machine");
 }
@@ -80,6 +82,10 @@ event_e generateEvent(void)
         }
 
         // check if watering is required
+        if(WCwateringCheck()){
+            evnt = E_WATERING;
+            break;
+        }
 
         // check if heater needs to be toggled
         if(TCtemperatureCheck() != 0){
@@ -93,7 +99,8 @@ event_e generateEvent(void)
             }
         }
 
-        evnt = E_CONTINUE;
+        // handle user input
+        evnt = actionHandler(currentState, KYBgetAction());
         break;
 
     case S_WATERING_CONTROL:
@@ -146,6 +153,90 @@ void eventHandler(event_e event){
     }
 }
 
+event_e actionHandler(state_e state, actions_e action){
+    event_e returnValue = E_CONTINUE;
+    bool validAction = true;
+
+    switch (action) {
+    case(A_HELP):
+        if(state == S_WAIT_FOR_EVENT){
+            DSPhelp();
+        } else if(state == S_SERVICE_MENU){
+            // display service help
+        }
+        break;
+
+    case(A_SERVICE):
+        if(state != S_WAIT_FOR_EVENT){
+            validAction = false;
+            break;
+        }
+
+        returnValue = E_SERVICE_MODE;
+        break;
+
+    case(A_TIME):
+        DSPshow("Enter the minutes that have to pass.");
+        timeToPass = KYBgetint(0);
+        break;
+
+    case(A_LIGHT):
+        if(state != S_SERVICE_MENU){
+            validAction = false;
+            break;
+        }
+        returnValue = E_LIGHT_TOGGLE;
+
+        break;
+
+    case(A_HEATER):
+        if(state != S_SERVICE_MENU){
+            validAction = false;
+            break;
+        }
+
+        returnValue = E_HEATER_TOGGLE;
+        break;
+
+    case(A_PUMP):
+        if(state != S_SERVICE_MENU){
+            validAction = false;
+            break;
+        }
+
+        returnValue = E_HEATER_TOGGLE;
+        break;
+
+    case(A_CHANGE):
+        if(state != S_SERVICE_MENU){
+            validAction = false;
+            break;
+        }
+
+        PTchangePlant();
+        break;
+
+    case(A_ADD):
+        if(state != S_SERVICE_MENU){
+            validAction = false;
+            break;
+        }
+
+        PTnewPlant();
+        break;
+
+    case(A_EXIT):
+    default:
+        validAction = false;
+        break;
+    }
+
+    if(!validAction){
+        DSPshow("Not a valid action in this state, try again.");
+    }
+
+    return returnValue;
+}
 
 /*
 E_NO,

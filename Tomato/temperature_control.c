@@ -26,6 +26,11 @@ void TCinitialise(void){
 
 void TCtoggleHeater(void){
     heaterState = !heaterState;
+    if(heaterState){
+        DSPshow("Heater state: on");
+    } else {
+        DSPshow("Heater state: off");
+    }
 }
 
 bool TCgetHeaterState(void){

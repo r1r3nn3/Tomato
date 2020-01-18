@@ -22,6 +22,11 @@ void LCinitialise(void){
 
 void LCtoggleLight(void){
     lightState = !lightState;
+    if(lightState){
+        DSPshow("Light state: on");
+    } else {
+        DSPshow("Light state: off");
+    }
 }
 
 bool LCgetState(void){
