@@ -15,14 +15,12 @@ Date:           21-11-2019
 int main()
 {
     event_e currentEvent = E_START;
-    event_e prevEvent;
 
     // Update loop
     while(1){
-        prevEvent = currentEvent;
         currentEvent = generateEvent();
 
-        //evenHandler(currentEvent);
+        evenHandler(currentEvent);
         break;
     }
 

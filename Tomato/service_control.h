@@ -1,12 +1,11 @@
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#ifndef SERVICE_CONTROL_H
+#define SERVICE_CONTROL_H
+
+#include "stdbool.h"
 
 //--------------------display--------------------//
-void DSPinitialise(void);
-void DSPshow(const char *text);
-void DSPdebugSystemInfo(const char *text);
-void DSPsimulationSystemInfo(const char *text);
-void DSPshowSystemError(const char *text);
 
+void SCinitialise(void);
+bool SCgetServiceState(void);
 
-#endif // DISPLAY_H
+#endif // SERVICE_CONTROL_H

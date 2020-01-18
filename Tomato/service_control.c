@@ -9,3 +9,16 @@ Date:           21-11-2019
 
 #include <stdio.h>
 #include "stdbool.h"
+
+#include "display.h"
+
+bool serviceMode = false;
+
+
+void SCinitialise(void){
+    DSPshow("Initialised: Service mode.");
+}
+
+bool SCgetServiceState(void){
+    return serviceMode;
+}
