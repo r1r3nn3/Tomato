@@ -14,7 +14,7 @@ Date:           21-11-2019
 #include "plant.h"
 #include "local_time.h"
 
-static bool lightState = 0;
+static bool lightState = false;
 
 void LCinitialise(void){
     DSPshow("Initialised: Light control");
@@ -23,9 +23,9 @@ void LCinitialise(void){
 void LCtoggleLight(void){
     lightState = !lightState;
     if(lightState){
-        DSPshow("Light state: on");
+        DSPsimulationSystemInfo("Light state: on");
     } else {
-        DSPshow("Light state: off");
+        DSPsimulationSystemInfo("Light state: off");
     }
 }
 

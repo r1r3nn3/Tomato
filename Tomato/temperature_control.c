@@ -27,9 +27,9 @@ void TCinitialise(void){
 void TCtoggleHeater(void){
     heaterState = !heaterState;
     if(heaterState){
-        DSPshow("Heater state: on");
+        DSPsimulationSystemInfo("Heater state: on");
     } else {
-        DSPshow("Heater state: off");
+        DSPsimulationSystemInfo("Heater state: off");
     }
 }
 
@@ -52,5 +52,10 @@ int TCtemperatureCheck(void){
 }
 
 void TCchangeTemperature(void){
-    currentTemperature += (double)(rand() % 100) / 100.0;
+    if(heaterState){
+        currentTemperature += ((double)(rand() % 100) / 100.0);
+    } else {
+        currentTemperature += -1 * ((double)(rand() % 100) / 100.0);
+    }
+
 }

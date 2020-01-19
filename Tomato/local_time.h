@@ -9,7 +9,10 @@ const char * LTgetTime(char* output);
 void LTincreaseTime(int minutes);
 int LTgetMinutes(void);
 int LTgetHours(void);
-int LTgetDays(void);
+int LTgetYearDays(void);
+int LTgetMonthDays(void);
+int LTgetMonths(void);
+int LTgetYears(void);
 long int LTgetTimeObject(void);
 
 #endif // LOCAL_TIME_H

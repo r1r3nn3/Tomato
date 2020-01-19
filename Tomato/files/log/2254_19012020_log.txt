@@ -1,0 +1,8 @@
+Log file from: 2254_19012020
+STATUS: Watering done
+STATUS: Watering done
+STATUS: Light state: on
+STATUS: Watering done
+STATUS: Light state: off
+STATUS: Watering done
+STATUS: Watering done

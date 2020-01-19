@@ -7,8 +7,6 @@ Teacher:        Jos Onokiewicz
 Date:           21-11-2019
 */
 
-// TODO: is this required??
-
 #include <stdio.h>
 #include "stdbool.h"
 #include "string.h"
@@ -19,12 +17,9 @@ Date:           21-11-2019
 
 static plant_t currentPlant;
 
-void PTinitialise(void){
-    strcpy(currentPlant.name, "Tomato");
-    currentPlant.tempMax = 25;
-    currentPlant.tempMin = 15;
-    currentPlant.waterLevelMax = 80;
-    currentPlant.lightHours = 8;
+void PTinitialise(plant_t newPlant){
+    currentPlant = newPlant;
+
     DSPshow("Initialised: Plant");
 }
 
@@ -46,4 +41,8 @@ unsigned int PTgetWaterLevelMax(){
 
 int PTgetLightHours(){
     return currentPlant.lightHours;
+}
+
+void PTchangePlant(plant_t newPlant){
+    currentPlant = newPlant;
 }

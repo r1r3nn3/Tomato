@@ -2,40 +2,28 @@
 
 title Tomato - The Automatic Greenhouse
 
-[*] --> Initialised : E_START / APGinitialise()
-Initialised : WCinit();
-Initialised : TCinit();
-Initialised : LCinit();
-Initialised --> WaitForEvent : E_CONTINUE
+[*] --> Initialised : E_START / TAGinitialise()
+Initialised --> InitialisePlant : E_CONTINEU
+InitialisePlant --> CheckForEvent : E_INIT_PLANT
 
-WaitForEvent --> WateringControl : E_WATER_PLANT_LOW
-WaitForEvent --> WateringControl : E_WATERING_INTERFALL
-WateringControl --> WaitForEvent : E_WATERING / WwaterPlant();
-WateringControl : wateringTimer = 0;
+CheckForEvent --> CheckForEvent : E_PASS_TIME
+CheckForEvent --> CheckForEvent : E_LIGHT_TOGGLE
+CheckForEvent --> CheckForEvent : E_HEATER_TOGGLE
+CheckForEvent --> CheckForEvent : E_WATER_PLANT
+CheckForEvent --> HandleUserInput : E_ASK_USER_INPUT
 
-WaitForEvent --> TemperatureControl : E_TEMP_OVER_MAX
-WaitForEvent --> TemperatureControl : E_TEMP_OVER_MIN
-TemperatureControl --> WaitForEvent : E_TEMP_ADJUST / TadjustTemperatur(prevState)
+HandleUserInput --> HandleUserInput : E_NON_VALID_INPUT
+HandleUserInput --> HandleUserInput : E_HELP
+HandleUserInput --> HandleUserInput : E_UPDATE
+HandleUserInput --> CheckForEvent : E_INCREASE_TIME
+HandleUserInput --> HandleServiceInput : E_SERVICE
 
-WaitForEvent --> LightingControl : E_LIGHT_ON
-WaitForEvent --> LightingControl : E_LIGHT_OFF
-LightingControl --> WaitForEvent : E_LIGHT_ADJUST / LadjustLight(prevState);
-
-
-note right of Initialised
-    // Watering subsystem:
-    WATERING_INTERFAL = 21 600 000;  //in mS
-    WATERING_TIME = 30 000;          //in mS
-    wateringTimer = 0;               //in mS
-    waterLevelPlant = 0;             //in %
-    // TemperatureControl subsystem:
-    currentTemperature = 0;          //in degree C
-    MAX_TEMP = 25;                   //in degree C
-    MIN_TEMP = 18;                   //in degree C
-    // Lighting subsystem:
-    LIGHT_HOURS = 28 800 000;        //in mS per day
-    lightLevel = 0;                  //in % or lumen maybe?
-end note
-
+HandleServiceInput --> HandleServiceInput : E_ADD_PLANT
+HandleServiceInput --> HandleServiceInput : E_CHANGE_PLANT
+HandleServiceInput --> HandleServiceInput : E_PUMP_TOGGLE
+HandleServiceInput --> HandleServiceInput : E_HEATER_TOGGLE
+HandleServiceInput --> HandleServiceInput : E_LIGHT_TOGGLE
+HandleServiceInput --> HandleServiceInput : E_NON_VALID_INPUT
+HandleServiceInput --> InitialisePlant : E_USER
 
 @enduml

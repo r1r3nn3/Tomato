@@ -16,21 +16,20 @@ Date:           21-11-2019
 #include "display.h"
 
 #define BUFFER_SIZE 30
-#define NUMBER_OF_ACTIONS 11
+#define NUMBER_OF_ACTIONS 10
 
 /* Must match with enum actions_e */
 const char actions [NUMBER_OF_ACTIONS][BUFFER_SIZE] = {
-    "exit",
     "help",
     "update",
     "service",
-    "user",
     "time",
     "light",
     "heater",
     "pump",
     "change",
-    "add"
+    "add",
+    "user"
 };
 
 void KYBinitialise(void){
@@ -39,14 +38,14 @@ void KYBinitialise(void){
 
 char * KYBgetString(void){
     static char buffer[BUFFER_SIZE];
-    bool reading = true;
     unsigned int i = 0;
 
-    while(reading){
+    while(1){
         buffer[i] = getchar();
         if(buffer[i] == '\n'){
-            reading = false;
+            break;
         }
+        i++;
     }
 
     return buffer;
@@ -81,32 +80,37 @@ int KYBgetint(int ifWrongValue){
 
 // Recomendation: use hash table or dictionary
 actions_e KYBgetAction(void){
-    actions_e returnValue = A_NO;
+    actions_e returnValue;
 
-    bool gettingAction = true;
+    char buffer[BUFFER_SIZE];
+    bool validAction = false;
+    int i = 0;
+    char *userInput = KYBgetString();
 
-    while(gettingAction){
-        char buffer[BUFFER_SIZE];
-
-        strcpy(KYBgetString(), buffer);
-
-        for(int i = 0; i < BUFFER_SIZE; i++){
-            buffer[i] = (char)(tolower(buffer[i]));
+    while (1) {
+        buffer[i] = userInput[i];
+        if(buffer[i] == '\n'){
+            buffer[i] = '\0';
+            break;
         }
-
-        int count = 0;
-
-        for(; count < NUMBER_OF_ACTIONS; count++){
-            if(strcmp(buffer, actions[count])){
-                break;
-                gettingAction = false;
-            }
-            if(count + 1 < NUMBER_OF_ACTIONS){
-                DSPshow("Action not recognised try again.");
-            }
-        }
-
+        i++;
     }
 
-    return returnValue;
+    for(int i = 0; i < BUFFER_SIZE; i++){
+        buffer[i] = (char)(tolower(buffer[i]));
+    }
+
+    for(returnValue = 0; returnValue < NUMBER_OF_ACTIONS; returnValue++){
+         if(!strcmp(buffer, actions[returnValue])){
+            validAction = true;
+            break;
+        }
+    }
+
+    if(validAction){
+        return returnValue;
+    } else {
+        return A_NO;
+    }
+
 }

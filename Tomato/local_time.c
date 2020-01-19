@@ -62,8 +62,20 @@ int LTgetHours(void){
     return local->tm_hour;
 }
 
-int LTgetDays(void){
+int LTgetYearDays(void){
     return local->tm_yday;
+}
+
+int LTgetMonthDays(void){
+    return local->tm_mday;
+}
+
+int LTgetMonths(void){
+    return local->tm_mon + 1;
+}
+
+int LTgetYears(void){
+    return local->tm_year + 1900;
 }
 
 long int LTgetTimeObject(void){
@@ -73,19 +85,6 @@ long int LTgetTimeObject(void){
 void LTincreaseTime(int minutes){
     t += minutes * 60;
     local = localtime(&t);
-    /*
-    bool calculating = true;
-    while(calculating) {
-        if(local->tm_min >= 60){
-            local->tm_min -= 60;
-            local->tm_hour += 1;
-        } else if (local->tm_hour >= 24) {
-            local->tm_hour -= 24;
-            local->tm_yday += 1;
-        } else if (local->tm_yday >= 365){
-
-        }
-    }*/
 }
 
 

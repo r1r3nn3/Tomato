@@ -1,9 +1,6 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#define DISPLAY_SIZE_STR "70"
-#define DISPLAY_SIZE 70
-
 //--------------------display--------------------//
 
 #define DISPLAY_SIZE_STR "70"
@@ -15,6 +12,7 @@ void DSPdebugSystemInfo(const char *text);
 void DSPsimulationSystemInfo(const char *text);
 void DSPshowSystemError(const char *text);
 void DSPhelp(void);
+void DSPclearScreen(void);
 void DSPsystemInfo(void);
 void DSPserviceInfo(void);
 void calculateTime(double);

@@ -1,0 +1,7 @@
+Log file from: 2258_19012020
+STATUS: Watering done
+STATUS: Heater state: on
+STATUS: Watering done
+STATUS: Light state: on
+STATUS: Watering done
+STATUS: Heater state: off

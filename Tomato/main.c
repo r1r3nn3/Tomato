@@ -10,6 +10,7 @@ Date:           21-11-2019
 #include "fsm.h"
 #include "display.h"
 #include <stdio.h>
+#include <stdlib.h> // TEMP
 #include "stdbool.h"
 
 int main()
@@ -19,9 +20,7 @@ int main()
     // Update loop
     while(1){
         currentEvent = generateEvent();
-
-        evenHandler(currentEvent);
-        break;
+        eventHandler(currentEvent);
     }
 
     return 0;

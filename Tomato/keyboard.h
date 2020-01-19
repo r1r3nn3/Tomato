@@ -4,7 +4,6 @@
 //--------------------keyboard--------------------//
 
 typedef enum{
-    A_EXIT,
     A_HELP,
     A_UPDATE,
     A_SERVICE,
@@ -14,6 +13,7 @@ typedef enum{
     A_PUMP,
     A_CHANGE,
     A_ADD,
+    A_USER,
     A_NO
 } actions_e;
 

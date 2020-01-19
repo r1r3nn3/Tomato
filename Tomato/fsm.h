@@ -4,8 +4,9 @@
 #include "events.h"
 
 event_e generateEvent(void);
-void evenHandler(event_e evnt);
+void eventHandler(event_e event);
 void FSMinitialise(void);
+event_e TAGinitialise(void);
 
 
 #endif // FSM_H

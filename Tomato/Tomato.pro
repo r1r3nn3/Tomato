@@ -5,6 +5,7 @@ CONFIG -= qt
 
 SOURCES += \
         display.c \
+        file_manager.c \
         fsm.c \
         keyboard.c \
         light_control.c \
@@ -18,6 +19,7 @@ SOURCES += \
 HEADERS += \
     display.h \
     events.h \
+    file_manager.h \
     fsm.h \
     keyboard.h \
     light_control.h \
