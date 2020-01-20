@@ -55,7 +55,7 @@ void TCchangeTemperature(void){
     if(heaterState){
         currentTemperature += ((double)(rand() % 100) / 100.0);
     } else {
-        currentTemperature += -1 * ((double)(rand() % 100) / 100.0);
+        currentTemperature -= ((double)(rand() % 100) / 100.0);
     }
 
 }

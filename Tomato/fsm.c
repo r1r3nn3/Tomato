@@ -123,6 +123,7 @@ event_e generateEvent(void)
         case A_ADD:
         case A_NO:
         default:
+            DSPshow("Invalid input.");
             evnt = E_NON_VALID_INPUT;
             break;
         }
@@ -161,6 +162,7 @@ event_e generateEvent(void)
         case A_TIME:
         case A_NO:
         default:
+            DSPshow("Invalid input.");
             evnt = E_NON_VALID_INPUT;
             break;
         }
