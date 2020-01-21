@@ -273,7 +273,7 @@ void eventHandler(event_e event){
         case E_SERVICE:
             DSPserviceInfo();
             userAction = KYBgetAction();
-            switchState = false;
+            nextState = S_HANDLE_SERVICE_INPUT;
             break;
 
         case E_NON_VALID_INPUT:
@@ -296,16 +296,19 @@ void eventHandler(event_e event){
 
         case E_LIGHT_TOGGLE:
             LCtoggleLight();
+            userAction = KYBgetAction();
             switchState = false;
             break;
 
         case E_HEATER_TOGGLE:
             TCtoggleHeater();
+            userAction = KYBgetAction();
             switchState = false;
             break;
 
         case E_PUMP_TOGGLE:
             WCtogglePump();
+            userAction = KYBgetAction();
             switchState = false;
             break;
 
@@ -330,7 +333,7 @@ void eventHandler(event_e event){
             while (1) {
                 plantIndex = KYBgetint(1000);
 
-                if(plantIndex < totalPlants){
+                if(plantIndex > totalPlants){
                     DSPshow("Try again.");
                 }else{
                     break;
@@ -339,6 +342,7 @@ void eventHandler(event_e event){
 
             FMsetActivePlant(plantIndex);
             PTchangePlant(FMgetPlant(plantIndex));
+            userAction = KYBgetAction();
             switchState = false;
             break;
 
@@ -354,7 +358,7 @@ void eventHandler(event_e event){
             while (1) {
                 numberBuffer = KYBgetint(PLANT_MAX_TEMP_MAX);
 
-                if(numberBuffer < PLANT_MAX_TEMP_MAX || 0 < numberBuffer){
+                if(numberBuffer > PLANT_MAX_TEMP_MAX || numberBuffer < 0){
                     DSPshow("Try again.");
                 }else{
                     break;
@@ -366,7 +370,7 @@ void eventHandler(event_e event){
             while (1) {
                 numberBuffer = KYBgetint(PLANT_MAX_TEMP_MIN);
 
-                if(numberBuffer < PLANT_MAX_TEMP_MIN || 0 < numberBuffer){
+                if(numberBuffer > PLANT_MAX_TEMP_MIN || numberBuffer < 0){
                     DSPshow("Try again.");
                 }else{
                     break;
@@ -378,7 +382,7 @@ void eventHandler(event_e event){
             while (1) {
                 numberBuffer = KYBgetint(PLANT_MAX_WATER_LEVEL);
 
-                if(numberBuffer < PLANT_MAX_WATER_LEVEL || 0 < numberBuffer){
+                if(numberBuffer > PLANT_MAX_WATER_LEVEL || numberBuffer < 0){
                     DSPshow("Try again.");
                 }else{
                     break;
@@ -390,7 +394,7 @@ void eventHandler(event_e event){
             while (1) {
                 numberBuffer = KYBgetint(PLANT_MAX_LIGHT_HOURS);
 
-                if(numberBuffer < PLANT_MAX_LIGHT_HOURS || 0 < numberBuffer){
+                if(numberBuffer > PLANT_MAX_LIGHT_HOURS || numberBuffer < 0){
                     DSPshow("Try again.");
                 }else{
                     break;
@@ -399,6 +403,7 @@ void eventHandler(event_e event){
             addPlant.lightHours = numberBuffer;
 
             FMsaveNewPlant(addPlant);
+            userAction = KYBgetAction();
             switchState = false;
             break;
 

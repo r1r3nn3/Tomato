@@ -47,7 +47,7 @@ char * KYBgetString(void){
         }
         i++;
     }
-
+    buffer[i+1] = '\0';
     return buffer;
 }
 
