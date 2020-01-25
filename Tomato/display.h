@@ -8,14 +8,11 @@
 
 void DSPinitialise(void);
 void DSPshow(const char *text);
-void DSPdebugSystemInfo(const char *text);
-void DSPsimulationSystemInfo(const char *text);
+void DSPsimulationSystemInfo(const char *text, int value);
 void DSPshowSystemError(const char *text);
-void DSPhelp(void);
+void DSPhelp(int helpType);
 void DSPclearScreen(void);
-void DSPsystemInfo(void);
-void DSPserviceInfo(void);
-void calculateTime(double);
+void DSPsystemInfo(int systemInfoType);
 void DSPprintSeperator(void);
 
 #endif // DISPLAY_H

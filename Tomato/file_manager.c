@@ -14,7 +14,7 @@ Date:           21-11-2019
 #include "dirent.h"
 
 #include "file_manager.h"
-#include "local_time.h"
+#include "time_manager.h"
 #include "display.h"
 
 static FILE * logFile;
@@ -35,6 +35,16 @@ void FMinitialise(void){
     char buffer[10];
     char dateFormat[30];
     int numberBuffer;
+
+    // set file location for plants file
+    strcpy(plantFileLocation, fileFolder);
+    strcat(plantFileLocation, plantFolder);
+    strcat(plantFileLocation, plantFileName);
+
+    // set file location for active plant file
+    strcpy(activePlantFileLocation, fileFolder);
+    strcat(activePlantFileLocation, plantFolder);
+    strcat(activePlantFileLocation, activePlantFileName);
 
     // create file location for log files with the format: hhmm_DDMMYYYY_log.txt
     strcpy(logFileLocation, fileFolder);
@@ -89,35 +99,42 @@ void FMinitialise(void){
 
     logFile = fopen(logFileLocation, "w");
     fseek(logFile, 0, SEEK_END);
-    fprintf(logFile, "Log file from: ");
-    fprintf(logFile, "%s", dateFormat);
-    fprintf(logFile, "\n");
+    fprintf(logFile, "Log file from: %s\n", dateFormat);
+    fprintf(logFile, "Current active plant is: %s\n", FMgetPlantName(FMgetActivePlant()));
     fclose(logFile);
-
-    // set file location for plants file
-    strcpy(plantFileLocation, fileFolder);
-    strcat(plantFileLocation, plantFolder);
-    strcat(plantFileLocation, plantFileName);
-
-    // set file location for active plant file
-    strcpy(activePlantFileLocation, fileFolder);
-    strcat(activePlantFileLocation, plantFolder);
-    strcat(activePlantFileLocation, activePlantFileName);
 
     DSPshow("Initialised: File manager");
 }
 
 void FMsetActivePlant(int index){
     activePlantFile = fopen(activePlantFileLocation, "w");
-    putw(index, activePlantFile);
+    fprintf(activePlantFile, "%i\n", index);
     fclose(activePlantFile);
+
+    char buffer[DISPLAY_SIZE];
+
+    strcpy(buffer, "Active plant changed to: ");
+    strcat(buffer, FMgetPlantName(index));
+
+    DSPsimulationSystemInfo(buffer, 10000);
 }
 
 int FMgetActivePlant(void){
     int returnValue;
+    int counter = 0;
+    char buffer[10];
 
     activePlantFile = fopen(activePlantFileLocation, "r");
-    returnValue = getw(activePlantFile);
+    fseek(activePlantFile, 0, SEEK_SET);
+    while (1) {
+        fgets(buffer, 100, activePlantFile);
+        if(10 == counter){
+            break;
+        }
+        counter++;
+    }
+    returnValue = atoi(buffer);
+
     fclose(activePlantFile);
 
     return returnValue;
@@ -142,13 +159,12 @@ void FMwriteToLog(int messageType,const char *text){
         break;
     }
 
-    fprintf(logFile, "%s", text);
-    fprintf(logFile, "\n");
+    fprintf(logFile, "%s\n", text);
     fclose(logFile);
 }
 
 // plant_t is empty index is wrong
-plant_t FMgetPlant(int plantIndex){
+plant_t FMgetPlant(unsigned int plantIndex){
     plant_t returnPlant;
     char buffer[100];
     int counter = 1;
@@ -225,4 +241,11 @@ void FMsaveNewPlant(plant_t newPlant){
     fseek(plantFile, 0, SEEK_END);
     fprintf(plantFile, "%s;%i;%i;%i;%i\n", newPlant.name, newPlant.tempMax, newPlant.tempMin, newPlant.lightHours, newPlant.waterLevelMax);
     fclose(plantFile);
+
+    char buffer[DISPLAY_SIZE];
+
+    strcpy(buffer, "Plant is added: ");
+    strcat(buffer, newPlant.name);
+
+    DSPsimulationSystemInfo(buffer, 10000);
 }

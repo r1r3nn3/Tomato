@@ -14,8 +14,8 @@ Date:           21-11-2019
 #include "time.h"
 
 #include "display.h"
-#include "plant.h"
-#include "local_time.h"
+#include "plant_manager.h"
+#include "time_manager.h"
 
 static struct tm* local;
 static time_t t;
@@ -45,7 +45,7 @@ void setTimeToBuffer(){
 void LTinitialise(void){
     t = time(NULL);
     local = localtime(&t);
-    DSPshow("Initialised: Local time");
+    DSPshow("Initialised: Time manager");
 }
 
 const char* LTgetTime(char* output){

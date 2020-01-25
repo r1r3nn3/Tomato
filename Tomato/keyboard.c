@@ -16,14 +16,15 @@ Date:           21-11-2019
 #include "display.h"
 
 #define BUFFER_SIZE 30
-#define NUMBER_OF_ACTIONS 10
+#define NUMBER_OF_ACTIONS 11
 
 /* Must match with enum actions_e */
-const char actions [NUMBER_OF_ACTIONS][BUFFER_SIZE] = {
+static const char actions [NUMBER_OF_ACTIONS][BUFFER_SIZE] = {
     "help",
     "update",
     "service",
     "time",
+    "water",
     "light",
     "heater",
     "pump",
@@ -84,16 +85,16 @@ actions_e KYBgetAction(void){
 
     char buffer[BUFFER_SIZE];
     bool validAction = false;
-    int i = 0;
-    char *userInput = KYBgetString();
+    int counter = 0;
+
+    strcpy(buffer, KYBgetString());
 
     while (1) {
-        buffer[i] = userInput[i];
-        if(buffer[i] == '\n'){
-            buffer[i] = '\0';
+        if(buffer[counter] == '\n'){
+            buffer[counter] = '\0';
             break;
         }
-        i++;
+        counter++;
     }
 
     for(int i = 0; i < BUFFER_SIZE; i++){

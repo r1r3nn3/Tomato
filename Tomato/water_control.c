@@ -13,11 +13,11 @@ Date:           21-11-2019
 #include "time.h"
 
 #include "display.h"
-#include "local_time.h"
-#include "plant.h"
+#include "time_manager.h"
+#include "plant_manager.h"
 
 static bool pumpState = false;
-static unsigned int plantWaterLevel = 60; // percentage 0 - 100%
+static unsigned int plantWaterLevel = 0; // percentage 0 - 100%
 
 static time_t wateringTimer;
 
@@ -30,9 +30,9 @@ void WCinitialise(void){
 void WCtogglePump(void){
     pumpState = !pumpState;
     if(pumpState){
-        DSPsimulationSystemInfo("Pump state: on");
+        DSPsimulationSystemInfo("Pump state: on", (int)plantWaterLevel);
     } else {
-        DSPsimulationSystemInfo("Pump state: off");
+        DSPsimulationSystemInfo("Pump state: off", (int)plantWaterLevel);
     }
 }
 
@@ -45,9 +45,11 @@ unsigned int WCgetPlantWaterLevel(void){
 }
 
 void WCwaterPlant(void){
+    printf("");
     wateringTimer = LTgetTimeObject();
+    int tempPlantWaterLevel = (int)plantWaterLevel;
     plantWaterLevel = PTgetWaterLevelMax();
-    DSPsimulationSystemInfo("Watering done");
+    DSPsimulationSystemInfo("Watering done", tempPlantWaterLevel);
 }
 
 bool WCwateringCheck(void){

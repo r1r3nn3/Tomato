@@ -13,14 +13,14 @@ Date:           21-11-2019
 #include "stdbool.h"
 
 #include "display.h"
-#include "plant.h"
+#include "plant_manager.h"
 
 static plant_t currentPlant;
 
 void PTinitialise(plant_t newPlant){
     currentPlant = newPlant;
 
-    DSPshow("Initialised: Plant");
+    DSPshow("Initialised: Plant manager");
 }
 
 const char * PTgetName(){

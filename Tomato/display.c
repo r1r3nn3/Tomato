@@ -14,8 +14,8 @@ Date:           21-11-2019
 #include "time.h"
 
 #include "display.h"
-#include "plant.h"
-#include "local_time.h"
+#include "plant_manager.h"
+#include "time_manager.h"
 #include "water_control.h"
 #include "temperature_control.h"
 #include "light_control.h"
@@ -30,7 +30,9 @@ void DSPclearScreen(void){
     system("cls");
 }
 
-void DSPsystemInfo(){
+// systemInfoType = 0 for user menu
+// systemInfoType = 1 for service menu
+void DSPsystemInfo(int systemInfoType){
     // get time ready to print
     char timeBuffer[TIME_BUFFER_SIZE];
     LTgetTime(timeBuffer);
@@ -39,9 +41,20 @@ void DSPsystemInfo(){
     printf("\t\t\tTOMATO - THE AUTOMATIC GREENHOUSE \n\n");
     printf("Current values: \t\t\t Active plant \t\t %s \n", PTgetName());
     printf("Water level \t %i %c \t\t\t Water level max \t %i %c \n", WCgetPlantWaterLevel(), '%', PTgetWaterLevelMax(), '%');
-    printf("Temperature \t %.1lf C \t\t Max temperature \t %i C \n", TCgetCurrentTemperature(), PTgetTempMax());
-    printf("Light \t\t %s \t\t\t Min Temperature \t %i C \n", LCgetState() ? "on" : "off", PTgetTempMin());
-    printf("Time \t\t %s \t\t\t Light hours \t\t %i \n", timeBuffer, PTgetLightHours());
+    printf("Temperature \t %.1lf C %s\t\t Max temperature \t %i C \n", TCgetCurrentTemperature(), (TCgetCurrentTemperature() < 10) ? "\t": "", PTgetTempMax());
+    printf("Heater \t\t %s \t\t\t Min temperature \t %i C \n", TCgetHeaterState() ? "on" : "off", PTgetTempMin());
+    printf("Light \t\t %s \t\t\t Light hours \t\t %i \n", LCgetState() ? "on" : "off", PTgetLightHours());
+    switch (systemInfoType) {
+    case 1:
+        printf("Time \t\t %s \t\t\t Service mode \t\t on\n", timeBuffer);
+        break;
+
+    case 0:
+    default:
+        printf("Time \t\t %s\n", timeBuffer);
+        break;
+    }
+
     DSPprintSeperator();
     printf("Enter 'help' followed by 'return' to show the available actions.\n");
     DSPprintSeperator();
@@ -49,29 +62,39 @@ void DSPsystemInfo(){
 
 }
 
-void DSPhelp(){
-    DSPprintSeperator();
-    printf("\t--- Help menu ---\n");
-    printf("Use the following commands followed by 'enter':\n");
-    printf("'help'\t\t to show this help menu.\n");
-    printf("'update'\t to update the interface.\n");
-    printf("'time'\t\t to increase the time.\n");
-    printf("'service'\t to go to the service menu.\n");
-    DSPprintSeperator();
-    printf("\n");
-}
+// helpType = 0 for user menu
+// helpType = 1 for service menu
+void DSPhelp(int helpType){
+    switch(helpType){
+    case(0):
+        DSPprintSeperator();
+        printf("\t--- Help menu ---\n");
+        printf("Use the following commands followed by 'enter':\n");
+        printf("'help'\t\t to show this help menu.\n");
+        printf("'update'\t to update the interface.\n");
+        printf("'time'\t\t to increase the time.\n");
+        printf("'service'\t to go to the service menu.\n");
+        DSPprintSeperator();
+        printf("\n");
+        break;
 
-void DSPserviceInfo(){
-    DSPprintSeperator();
-    printf("\t--- Service menu ---\n");
-    printf("'user'\t\t to toggle the watering system on/off.\n");
-    printf("'light'\t\t to toggle the light on/off.\n");
-    printf("'heater'\t to toggle the heater on/off.\n");
-    printf("'pump'\t\t to toggle the pump on/off.\n");
-    printf("'add'\t\t to select a different active plant.\n");
-    printf("'change'\t to change the current active plant.\n");
-    DSPprintSeperator();
-    printf("\n");
+    case(1):
+        DSPprintSeperator();
+        printf("\t--- Service help menu ---\n");
+        printf("'help'\t\t to show this help menu.\n");
+        printf("'update'\t to update the interface.\n");
+        printf("'water'\t\t to activate the watering system.\n");
+        printf("'light'\t\t to toggle the light on/off.\n");
+        printf("'heater'\t to toggle the heater on/off.\n");
+        printf("'pump'\t\t to toggle the pump on/off.\n");
+        printf("'add'\t\t to select a different active plant.\n");
+        printf("'change'\t to change the current active plant.\n");
+        DSPprintSeperator();
+        printf("\n");
+        break;
+    }
+
+
 }
 
 void DSPprintSeperator(){
@@ -83,20 +106,38 @@ void DSPshow(const char *text)
     printf("## %-" DISPLAY_SIZE_STR "s ##\n", text);
 }
 
-void DSPdebugSystemInfo(const char *text)
+// to avoid logging a interget value, valueForLog > 10000
+void DSPsimulationSystemInfo(const char *text, int valueForLog)
 {
-    printf("-- DEBUG %-" DISPLAY_SIZE_STR "s\n", text);
-}
+    char buffer[DISPLAY_SIZE + 10];
+    char numberbuffer[10];
 
-void DSPsimulationSystemInfo(const char *text)
-{
-    FMwriteToLog(2, text);
-    printf("-- SIMULATION %-" DISPLAY_SIZE_STR "s\n", text);
+    LTgetTime(buffer);
+    strcat(buffer, " - ");
+
+    if(valueForLog < 10000){
+        itoa(valueForLog, numberbuffer, 10);
+        strcat(buffer, numberbuffer);
+        strcat(buffer, " - ");
+    }
+    strcat(buffer, text);
+    FMwriteToLog(2, buffer);
+
+    LTgetTime(buffer);
+    strcat(buffer, " - ");
+    strcat(buffer, text);
+    printf("-- SIMULATION %-" DISPLAY_SIZE_STR "s\n", buffer);
 }
 
 void DSPshowSystemError(const char *text)
 {
-    FMwriteToLog(1, text);
+    char buffer[DISPLAY_SIZE + 10];
+
+    LTgetTime(buffer);
+    strcat(buffer, " - ");
+    strcat(buffer, text);
+
+    FMwriteToLog(1, buffer);
     printf("## SYSTEM ERROR %-" DISPLAY_SIZE_STR "s ##\n", text);
 }
 

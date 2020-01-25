@@ -8,6 +8,7 @@ typedef enum{
     A_UPDATE,
     A_SERVICE,
     A_TIME,
+    A_WATER,
     A_LIGHT,
     A_HEATER,
     A_PUMP,

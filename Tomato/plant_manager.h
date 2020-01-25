@@ -1,5 +1,5 @@
-#ifndef PLANT_H
-#define PLANT_H
+#ifndef PLANT_MANAGER_H
+#define PLANT_MANAGER_H
 
 #include <stdio.h>
 #include <stdlib.h>

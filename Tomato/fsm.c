@@ -18,8 +18,8 @@ Date:           21-11-2019
 #include "temperature_control.h"
 #include "water_control.h"
 #include "service_control.h"
-#include "plant.h"
-#include "local_time.h"
+#include "plant_manager.h"
+#include "time_manager.h"
 #include "keyboard.h"
 #include "file_manager.h"
 
@@ -60,12 +60,6 @@ event_e generateEvent(void)
         evnt = E_CONTINUE;
 
     case S_CHECK_FOR_EVENT:
-        // check if there is time to pass
-        if(timeToPass != 0){
-            evnt = E_PASS_TIME;
-            break;
-        }
-
         // check for correct light state
         if(LClightCheck()){
             evnt = E_LIGHT_TOGGLE;
@@ -90,6 +84,12 @@ event_e generateEvent(void)
                 evnt = E_HEATER_TOGGLE;
                 break;
             }
+        }
+
+        // check if there is time to pass
+        if(timeToPass != 0){
+            evnt = E_PASS_TIME;
+            break;
         }
 
         // if the plant is take care of ask for user input
@@ -133,6 +133,10 @@ event_e generateEvent(void)
     case S_HANDLE_SERVICE_INPUT:
 
         switch(userAction){
+        case A_WATER:
+            evnt = E_WATER_PLANT;
+            break;
+
         case A_LIGHT:
             evnt = E_LIGHT_TOGGLE;
             break;
@@ -157,7 +161,13 @@ event_e generateEvent(void)
             evnt = E_USER;
             break;
 
+        case A_UPDATE:
+            evnt = E_UPDATE;
+            break;
+
         case A_HELP:
+            evnt = E_HELP;
+            break;
         case A_SERVICE:
         case A_TIME:
         case A_NO:
@@ -258,20 +268,20 @@ void eventHandler(event_e event){
             break;
 
         case E_HELP:
-            DSPhelp();
+            DSPhelp(0);
             userAction = KYBgetAction();
             switchState = false;
             break;
 
         case E_UPDATE:
             DSPclearScreen();
-            DSPsystemInfo();
+            DSPsystemInfo(0);
             userAction = KYBgetAction();
             switchState = false;
             break;
 
         case E_SERVICE:
-            DSPserviceInfo();
+            DSPhelp(1);
             userAction = KYBgetAction();
             nextState = S_HANDLE_SERVICE_INPUT;
             break;
@@ -293,6 +303,24 @@ void eventHandler(event_e event){
     case S_HANDLE_SERVICE_INPUT:
 
         switch(event){
+        case E_UPDATE:
+            DSPclearScreen();
+            DSPsystemInfo(1);
+            userAction = KYBgetAction();
+            switchState = false;
+            break;
+
+        case E_HELP:
+            DSPhelp(1);
+            userAction = KYBgetAction();
+            switchState = false;
+            break;
+
+        case E_WATER_PLANT:
+            WCwaterPlant();
+            userAction = KYBgetAction();
+            switchState = false;
+            break;
 
         case E_LIGHT_TOGGLE:
             LCtoggleLight();
@@ -318,7 +346,7 @@ void eventHandler(event_e event){
             int totalPlants = FMgetAmountOfPlants();
             int plantIndex = 0;
 
-            for(int i = 1; i < totalPlants; i++){
+            for(int i = 1; i < totalPlants + 1; i++){
                 char printBuffer[PLANT_NAME_SIZE + 5];
                 char buffer[5];
 
@@ -353,6 +381,15 @@ void eventHandler(event_e event){
 
             DSPshow("Please enter the name of the plant.");
             strcpy(addPlant.name, KYBgetString());
+
+            int counter = 0;
+            while (1) {
+                if(addPlant.name[counter] == '\n'){
+                    addPlant.name[counter] = '\0';
+                    break;
+                }
+                counter++;
+            }
 
             DSPshow("Please enter the maximum temperature.");
             while (1) {
@@ -409,8 +446,13 @@ void eventHandler(event_e event){
 
         case E_USER:
             PTchangePlant(FMgetPlant(FMgetActivePlant()));
+
+            if(WCgetPumpState()){
+                WCtogglePump();
+            }
+
             DSPclearScreen();
-            DSPsystemInfo();
+            DSPsystemInfo(0);
             nextState = S_CHECK_FOR_EVENT;
             break;
 
@@ -430,15 +472,16 @@ void eventHandler(event_e event){
 
 event_e TAGinitialise(void){
     DSPinitialise();
+    KYBinitialise();
     FSMinitialise();
     LTinitialise();
-    LCinitialise();
     FMinitialise();
     PTinitialise(FMgetPlant(FMgetActivePlant()));
     TCinitialise();
     WCinitialise();
+    LCinitialise();
     DSPshow("");
-    DSPsystemInfo();
+    DSPsystemInfo(0);
 
     return E_CONTINUE;
 }
