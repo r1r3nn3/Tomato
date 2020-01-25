@@ -9,11 +9,10 @@ SOURCES += \
         fsm.c \
         keyboard.c \
         light_control.c \
-        local_time.c \
         main.c \
-        plant.c \
-        service_control.c \
+        plant_manager.c \
         temperature_control.c \
+        time_manager.c \
         water_control.c
 
 HEADERS += \
@@ -23,8 +22,8 @@ HEADERS += \
     fsm.h \
     keyboard.h \
     light_control.h \
-    local_time.h \
-    plant.h \
-    service_control.h \
+    plant_manager.h \
+    time_manager.h \
+    time_manager.h \
     temperature_control.h \
     water_control.h

@@ -13,10 +13,10 @@ Date:           21-11-2019
 #include "time.h"
 
 #include "display.h"
-#include "plant.h"
+#include "plant_manager.h"
 
 static bool heaterState = false;
-static double currentTemperature = 20;
+static double currentTemperature = 10;
 
 
 void TCinitialise(void){
@@ -27,9 +27,9 @@ void TCinitialise(void){
 void TCtoggleHeater(void){
     heaterState = !heaterState;
     if(heaterState){
-        DSPsimulationSystemInfo("Heater state: on");
+        DSPsimulationSystemInfo("Heater state: on", (int)currentTemperature);
     } else {
-        DSPsimulationSystemInfo("Heater state: off");
+        DSPsimulationSystemInfo("Heater state: off", (int)currentTemperature);
     }
 }
 

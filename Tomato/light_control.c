@@ -11,8 +11,8 @@ Date:           21-11-2019
 #include "stdbool.h"
 
 #include "display.h"
-#include "plant.h"
-#include "local_time.h"
+#include "plant_manager.h"
+#include "time_manager.h"
 
 static bool lightState = false;
 
@@ -23,9 +23,9 @@ void LCinitialise(void){
 void LCtoggleLight(void){
     lightState = !lightState;
     if(lightState){
-        DSPsimulationSystemInfo("Light state: on");
+        DSPsimulationSystemInfo("Light state: on", 10000);
     } else {
-        DSPsimulationSystemInfo("Light state: off");
+        DSPsimulationSystemInfo("Light state: off", 10000);
     }
 }
 

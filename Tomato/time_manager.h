@@ -1,5 +1,5 @@
-#ifndef LOCAL_TIME_H
-#define LOCAL_TIME_H
+#ifndef TIME_MANAGER_H
+#define TIME_MANAGER_H
 
 #define TIME_BUFFER_SIZE 5
 //--------------------local time--------------------//
