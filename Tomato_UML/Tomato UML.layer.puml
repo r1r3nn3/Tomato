@@ -12,18 +12,25 @@ package "System Control Layer" {
 }
 
 package "Subsystems Layer" {
-    [Temperature control]
     [Light control]
     [Water control]
+    [File manager]
+    [Time manager]
+    [Plant manager]
+    [Temperature control]
 }
 
 package "Hardware Abstraction Layer" {
     [Hardware IO]
 }
 
+
 [FSM] -down-> [Light control]
 [FSM] -down-> [Temperature control]
 [FSM] -down-> [Water control]
+[FSM] -down-> [File manager]
+[FSM] -down-> [Time manager]
+[FSM] -down-> [Plant manager]
 [FSM] -up-> [Display]
 [FSM] -up-> [Keypad]
 [Light control] --> [Hardware IO]

@@ -3,8 +3,7 @@
 title Tomato - The Automatic Greenhouse
 
 [*] --> Initialised : E_START / TAGinitialise()
-Initialised --> InitialisePlant : E_CONTINEU
-InitialisePlant --> CheckForEvent : E_INIT_PLANT
+Initialised --> CheckForEvent : E_CONTINEU
 
 CheckForEvent --> CheckForEvent : E_PASS_TIME
 CheckForEvent --> CheckForEvent : E_LIGHT_TOGGLE
@@ -24,6 +23,13 @@ HandleServiceInput --> HandleServiceInput : E_PUMP_TOGGLE
 HandleServiceInput --> HandleServiceInput : E_HEATER_TOGGLE
 HandleServiceInput --> HandleServiceInput : E_LIGHT_TOGGLE
 HandleServiceInput --> HandleServiceInput : E_NON_VALID_INPUT
-HandleServiceInput --> InitialisePlant : E_USER
+HandleServiceInput --> CheckForEvent : E_USER
+
+
+note left of CheckForEvent
+	Checks are in this order:
+    Light, heater, water
+    Pass time
+end note
 
 @enduml
