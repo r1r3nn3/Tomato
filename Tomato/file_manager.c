@@ -1,6 +1,7 @@
 /// @file file_manager.c
 /// @author Alwin Rodewijk
 /// @date 25-01-2020
+/// @version V1.0
 /// @brief This file is used to read or write to files.
 
 #include <stdio.h>

@@ -1,6 +1,7 @@
 /// @file keyboard.c
 /// @author Alwin Rodewijk
 /// @date 25-01-2020
+/// @version V1.0
 /// @brief This file is read input from the terminal window.
 
 #include <stdio.h>

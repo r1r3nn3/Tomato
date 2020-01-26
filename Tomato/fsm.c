@@ -1,6 +1,7 @@
 /// @file fsm.c
 /// @author Alwin Rodewijk
 /// @date 25-01-2020
+/// @version V1.0
 /// @brief This file is related to the finite state machine.
 
 #include <stdio.h>

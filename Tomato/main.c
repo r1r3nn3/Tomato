@@ -14,6 +14,7 @@ Date:           25-01-2020
 /// The state machine is excuted by the function #eventHandler.
 /// @author Alwin Rodewijk
 /// @date 24-01-2020
+/// @version V1.0
 
 int main()
 {

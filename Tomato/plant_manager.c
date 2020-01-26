@@ -1,6 +1,7 @@
 /// @file plant_manager.c
 /// @author Alwin Rodewijk
 /// @date 25-01-2020
+/// @version V1.0
 /// @brief This file is used to manage the currently active plant.
 
 #include <stdio.h>

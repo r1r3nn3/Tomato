@@ -1,6 +1,7 @@
 /// @file temperature_control.c
 /// @author Alwin Rodewijk
 /// @date 25-01-2020
+/// @version V1.0
 /// @brief This file is used to control the temperature.
 
 #include <stdio.h>
