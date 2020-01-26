@@ -1,11 +1,7 @@
-/*
-Create by:      Alwin Rodewijk
-Student nr:     635653
-Class:          ENG-D-B1-ELTa
-Subject:        D-B-INSE-O
-Teacher:        Jos Onokiewicz
-Date:           21-11-2019
-*/
+/// @file fsm.c
+/// @author Alwin Rodewijk
+/// @date 25-01-2020
+/// @brief This file is related to the finite state machine.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,31 +13,45 @@ Date:           21-11-2019
 #include "light_control.h"
 #include "temperature_control.h"
 #include "water_control.h"
-#include "service_control.h"
 #include "plant_manager.h"
 #include "time_manager.h"
 #include "keyboard.h"
 #include "file_manager.h"
 
-typedef enum {
-    S_NO,
-    S_START,
-    S_CHECK_FOR_EVENT,
-    S_HANDLE_USER_INPUT,
-    S_HANDLE_SERVICE_INPUT,
+/// @brief Finite state machine states.
+///
+/// Contains the states used in the finite state machine.
+typedef enum {                  /// Error state.
+    S_NO,                       /// State at start.
+    S_START,                    /// Checking for events state.
+    S_CHECK_FOR_EVENT,          /// Handling preveously asked user input in this state.
+    S_HANDLE_USER_INPUT,        /// Handling preveously asked service input in this state.
+    S_HANDLE_SERVICE_INPUT,     /// The software is initialised in this state.
     S_INITIALISED
 } state_e;
 
-static state_e currentState = S_START;
-static actions_e userAction = A_NO;
+/// @brief Used to store the current state off the state machine.
+state_e currentState = S_START;
+/// @brief Used to store the user action returned from the keyboard.
+actions_e userAction = A_NO;
 
-static int timeToPass = 0;
+/// @brief Used to store time to be passed.
+/// This variable is used to store the time thats needs to be passed.
+int timeToPass = 0;
 
+/// Initialises the finite state machine
+///
+/// This is done at the start of this program. #timeToPass
+/// @post This will show a text that the system is initialised.
 void FSMinitialise(void){
     DSPshow("Initialised: Finite state machine");
 }
 
-
+/// Because we do not buffer events in an event queue, we send in the
+/// current state, #currentState, only events that can be handled.
+/// Implementing buffering using a queue and multi-threading is outside
+/// the scope of this introduction to C programming.
+/// @return Generated event for the #eventHandler function.
 event_e generateEvent(void)
 {
     event_e evnt = E_NO;
@@ -119,8 +129,10 @@ event_e generateEvent(void)
         case A_LIGHT:
         case A_HEATER:
         case A_PUMP:
+        case A_WATER:
         case A_CHANGE:
         case A_ADD:
+        case A_USER:
         case A_NO:
         default:
             DSPshow("Invalid input.");
@@ -182,6 +194,17 @@ event_e generateEvent(void)
     return evnt;
 }
 
+
+/// Uses the global variable #currentState to determine how to process the
+/// received event.
+/// If an event is received that should not be in handled in the
+/// currentState this is considered as a system error.
+/// The switch statements use the default case to show an appropriate message
+/// to the display.
+/// It is necessary to give in all default cases the nextState an appropriate
+/// value to avoid undefined behaviour.
+/// @param event This enum is the event that wil be handled in the #currentState.
+/// @post Updated #currentState by nextSate.
 void eventHandler(event_e event){
 
     state_e nextState = S_NO;
@@ -281,7 +304,8 @@ void eventHandler(event_e event){
             break;
 
         case E_SERVICE:
-            DSPhelp(1);
+            DSPclearScreen();
+            DSPsystemInfo(1);
             userAction = KYBgetAction();
             nextState = S_HANDLE_SERVICE_INPUT;
             break;
@@ -455,9 +479,14 @@ void eventHandler(event_e event){
             DSPsystemInfo(0);
             nextState = S_CHECK_FOR_EVENT;
             break;
+        case E_NON_VALID_INPUT:
+            userAction = KYBgetAction();
+            switchState = false;
+            break;
 
         default:
             DSPshowSystemError("software error in S_HANDLE_SERVICE_INPUT");
+            switchState = false;
             break;
         }
 
@@ -470,6 +499,9 @@ void eventHandler(event_e event){
     }
 }
 
+/// Initialises all subsystems (devices) and puts an initial text to the
+/// display.
+/// @return #E_CONTINUE is returned when the inistialisation is done.
 event_e TAGinitialise(void){
     DSPinitialise();
     KYBinitialise();

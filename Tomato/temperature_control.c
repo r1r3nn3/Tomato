@@ -1,11 +1,7 @@
-/*
-Create by:      Alwin Rodewijk
-Student nr:     635653
-Class:          ENG-D-B1-ELTa
-Subject:        D-B-INSE-O
-Teacher:        Jos Onokiewicz
-Date:           21-11-2019
-*/
+/// @file temperature_control.c
+/// @author Alwin Rodewijk
+/// @date 25-01-2020
+/// @brief This file is used to control the temperature.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,15 +11,22 @@ Date:           21-11-2019
 #include "display.h"
 #include "plant_manager.h"
 
-static bool heaterState = false;
-static double currentTemperature = 10;
+/// @brief Represents the state of the heater.
+bool heaterState = false;
+/// @brief Represents the temperature red by the temperature sensor.
+double currentTemperature = 10;
 
-
+/// Initialises the temperature controler.
+///
+/// This is done at the start of this program.
+/// @post A random seed is set changing the temperature. This will show a text that the system is initialised.
 void TCinitialise(void){
     srand(time(NULL));
     DSPshow("Initialised: Temperature control");
 }
 
+/// This function is used to toggle the heater.
+/// @post the #heaterState is switched to a different state.
 void TCtoggleHeater(void){
     heaterState = !heaterState;
     if(heaterState){
@@ -33,15 +36,19 @@ void TCtoggleHeater(void){
     }
 }
 
+/// This function is used to get #heaterState.
 bool TCgetHeaterState(void){
     return heaterState;
 }
 
+/// This function is used to get #currentTemperature.
 double TCgetCurrentTemperature(void){
     return currentTemperature;
 }
 
-/* -1 is to cold, 0 is oke, 1 is to hot */
+
+/// This function is used to check if #lightState needs to be changed.
+/// @return The return value represents the following: -1 = to cold, 0 = oke, 1 = to hot.
 int TCtemperatureCheck(void){
     if(currentTemperature > PTgetTempMax()){
         return 1;
@@ -51,6 +58,8 @@ int TCtemperatureCheck(void){
     return 0;
 }
 
+/// This function is used to change the #currentTemperature with a random value.
+/// The #heaterState dissides if the change is positive or negative.
 void TCchangeTemperature(void){
     if(heaterState){
         currentTemperature += ((double)(rand() % 100) / 100.0);

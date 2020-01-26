@@ -1,11 +1,7 @@
-/*
-Create by:      Alwin Rodewijk
-Student nr:     635653
-Class:          ENG-D-B1-ELTa
-Subject:        D-B-INSE-O
-Teacher:        Jos Onokiewicz
-Date:           21-11-2019
-*/
+/// @file water_control.c
+/// @author Alwin Rodewijk
+/// @date 25-01-2020
+/// @brief This file is used to control the water level off the plant.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,17 +12,25 @@ Date:           21-11-2019
 #include "time_manager.h"
 #include "plant_manager.h"
 
-static bool pumpState = false;
-static unsigned int plantWaterLevel = 0; // percentage 0 - 100%
+/// @brief Represents the state off the pump.
+bool pumpState = false;
+/// @brief Represents the soil moisture in percentage red by a sensor.
+unsigned int plantWaterLevel = 0;
 
-static time_t wateringTimer;
+time_t wateringTimer;
 
+/// Initialises the water controler.
+///
+/// This is done at the start of this program.
+/// @post This will show a text that the system is initialised.
 void WCinitialise(void){
     srand(time(NULL));
     wateringTimer = LTgetTimeObject();
     DSPshow("Initialised: Water control");
 }
 
+/// This function is used to toggle the pump.
+/// @post the #pumpState is switched to a different state.
 void WCtogglePump(void){
     pumpState = !pumpState;
     if(pumpState){
@@ -36,22 +40,26 @@ void WCtogglePump(void){
     }
 }
 
+/// This function is used to get #pumpState.
 bool WCgetPumpState(void){
     return pumpState;
 }
 
+/// This function is used to get the #plantWaterLevel.
 unsigned int WCgetPlantWaterLevel(void){
     return plantWaterLevel;
 }
 
+/// This function is used to water the plant.
+/// @post The plant is watered to the maximum water level off the current plant.
 void WCwaterPlant(void){
-    printf("");
     wateringTimer = LTgetTimeObject();
     int tempPlantWaterLevel = (int)plantWaterLevel;
     plantWaterLevel = PTgetWaterLevelMax();
     DSPsimulationSystemInfo("Watering done", tempPlantWaterLevel);
 }
 
+/// This function checks if watering is required.
 bool WCwateringCheck(void){
     bool returnValue = false;
 
@@ -68,6 +76,7 @@ bool WCwateringCheck(void){
     return returnValue;
 }
 
+/// This function is used to decrease the #plantWaterLevel with a random value.
 void WCchangeWaterLevel(void){
     plantWaterLevel -= (rand() % 10) / 3;
 }
