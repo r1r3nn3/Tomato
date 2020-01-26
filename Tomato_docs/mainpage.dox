@@ -2,14 +2,150 @@
 
 \mainpage Documentation application
 
-\section sec1 How to compile Tomate
+\section sec1 How to compile Tomato
 
-The text console application Tomateis developed using QtCreator in a C project.
+The text console application Tomato is developed using QtCreator in a C project.
 
 Press the green button down left to the editor for compiling the code project.
 
 \section sec2 User manual
-Start Tomate as follows: ...
+This manual explains how this program is used.
+
+\subsection sec21 Starting the program
+
+Start Tomato as follows:
+-# Start QtCreator 4.10.0.
+-# Open the Tomato.pro file located in the Tomato folder.
+-# Run the console application by clicking the green button down left.
+-# Rescale the console horizontaly so that the text is displayed as shown below.
+-# Rescale the console verticaly so that the maximum amount off text can be displayed.
+
 \image html startTomato.png "Console output after starting"
+
+\subsection sec22 User input
+User input will be used to execute actions.
+The User help menu below displays the posible actions currently available.
+
+\image html userHelpMenu.png "Help menu with available user actions"
+The actions have the following result:
+- help, This will display the above shown menu.
+Used for checking which actions are available to the user.
+
+- update, This will clear the console and display the current system info.
+Used for viewing the current system information.
+
+- time, This will simulate the increase off time.
+There will be asked to enter the amount off minutes with which the time will be increased.
+Used for quickly increasing the time to simulation automatic events.
+
+- service, This will enter the service menu.
+Used by operators to adjust system settings.
+
+\subsection sec23 Service input
+Service input will be used to execute different actions.
+The Service help menu below displays the posible actions currently available.
+
+\image html serviceHelpMenu.png "Help menu with available service actions"
+The actions have the following result:
+- help, This will display the above shown menu.
+Used for checking which actions are available to the operator.
+
+- update, This will clear the console and display the current system info.
+Used for viewing the current system information.
+
+- water, This will activate the automatic watering system.
+Used for testing the automatic watering system.
+
+- light, This will toggle the grow light on or off.
+Used for testing the grow light.
+
+- heater, This will toggle the heater on or off.
+Used for testing the heater.
+
+- pump, This will toggle the pump on or off. This is a part off the watering system.
+Used for testing the pump.
+
+- add, This will ask for the information required and save a new plant to plats.csv.
+Used for saveing a new plant.
+
+- change, This displays the saved plants in plant.csv and will ask to choose which plant has to be set as the active plant.
+Used for changing the active plant.
+
+- user, This will enter the user menu.
+Used by operators to go back to the user menu.
+
+Here the actions are shown when executed in the console when relevant.
+\image html systemInfo.png "Example of system info displayed using the 'update', 'user' or 'service' action"
+<br>
+\image html actionTime.png "Example where the time in increased with 60 minutes."
+<br>
+\image html actionWater.png "Example where the automatic watering system is activated."
+<br>
+\image html actionLight.png "Example where the light is toggled."
+<br>
+\image html actionHeater.png "Example where the heater is toggled."
+<br>
+\image html actionPump.png "Example where the pump is toggled."
+<br>
+\image html actionAdd.png "Example where a new plant is added to the plants.csv file."
+<br>
+\image html actionChange.png "Example where the currently active plant is changed."
+<br>
+\subsection sec24 Files
+
+The files used in this program are discribed.<br>
+There are 3 types of files used in this program:
+- Log files,
+- Active plant file,
+- Saved plants file
+
+<br>
+<b>Log files.</b><br>
+The log files are located here:
+\code
+../Tomato/files/log
+\endcode
+The log file is used to log the events that take place in the program.<br>
+A file with a unique name is generated at the start of the program with the function #FMinitialise.<br>
+The name follows the following format related to the current time.
+hhmm_DDMMYYYY_log.txt
+- hh, Represends the hours
+- mm, Represends the minutes
+- DD, Represends the days of the year
+- MM, Represends the months
+- YYYY, Represends the years
+
+Examples off a messages inside the log file.
+\code
+STATUS: 05:44 - 54 - Watering done
+STATUS: 17:44 - 10 - Heater state: on
+STATUS: 00:14 - Light state: on
+STATUS: 17:49 - Active plant changed to: Strawberry
+\endcode
+The 'STATUS' messages follow the following format:<br>
+First the time of the event is displayed, followed by a optional value, ending with the message text.<br>
+The optional value is used when watering for the water level when the plant received water.<br>
+The optional value is used when toggling the heater for the temperature at the before mentioned time.
+
+<br>
+<b>Active plant file.</b><br>
+The active plant file is located here:
+\code
+../Tomato/files/plants/activePlant.txt
+\endcode
+In this file the index of the current active plant is stored.<br>
+The file can be manually edited using a text editor.
+\note The index must be valid in plants.csv.
+
+<br>
+<b>Saved plants file.</b><br>
+The plants file is located here:
+\code
+../Tomato/files/plants/plants.csv
+\endcode
+The plants.csv file is used to save plant type.<br>
+This file can be manually edited using a text editor or excel.
+\note All parameters must be filled in correctly.
+\warning Manually editing this file is not recommended.
 
 */

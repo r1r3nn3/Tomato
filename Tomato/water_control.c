@@ -1,4 +1,4 @@
-/// @file water_controler.c
+/// @file water_control.c
 /// @author Alwin Rodewijk
 /// @date 25-01-2020
 /// @brief This file is used to control the water level off the plant.
@@ -12,10 +12,12 @@
 #include "time_manager.h"
 #include "plant_manager.h"
 
-static bool pumpState = false;
-static unsigned int plantWaterLevel = 0; // percentage 0 - 100%
+/// @brief Represents the state off the pump.
+bool pumpState = false;
+/// @brief Represents the soil moisture in percentage red by a sensor.
+unsigned int plantWaterLevel = 0;
 
-static time_t wateringTimer;
+time_t wateringTimer;
 
 /// Initialises the water controler.
 ///
@@ -51,7 +53,6 @@ unsigned int WCgetPlantWaterLevel(void){
 /// This function is used to water the plant.
 /// @post The plant is watered to the maximum water level off the current plant.
 void WCwaterPlant(void){
-    printf("");
     wateringTimer = LTgetTimeObject();
     int tempPlantWaterLevel = (int)plantWaterLevel;
     plantWaterLevel = PTgetWaterLevelMax();

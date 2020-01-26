@@ -46,17 +46,17 @@ void DSPsystemInfo(int systemInfoType){
     printf("Light \t\t %s \t\t\t Light hours \t\t %i \n", LCgetState() ? "on" : "off", PTgetLightHours());
     switch (systemInfoType) {
     case 1:
-        printf("Time \t\t %s \t\t\t Service mode \t\t on\n", timeBuffer);
+        printf("Time \t\t %s \t\t\t Service mode\n", timeBuffer);
         break;
 
     case 0:
     default:
-        printf("Time \t\t %s\n", timeBuffer);
+        printf("Time \t\t %s \t\t\t User mode\n", timeBuffer);
         break;
     }
 
     DSPprintSeperator();
-    printf("Enter 'help' followed by 'return' to show the available actions.\n");
+    printf("Enter 'help' followed by the enter key to show the available actions.\n");
     DSPprintSeperator();
     printf("\n");
 
@@ -68,8 +68,8 @@ void DSPhelp(int helpType){
     switch(helpType){
     case(0):
         DSPprintSeperator();
-        printf("\t--- Help menu ---\n");
-        printf("Use the following commands followed by 'enter':\n");
+        printf("\t--- User help menu ---\n");
+        printf("Use the following commands followed by enter key:\n");
         printf("'help'\t\t to show this help menu.\n");
         printf("'update'\t to update the interface.\n");
         printf("'time'\t\t to increase the time.\n");
@@ -81,6 +81,7 @@ void DSPhelp(int helpType){
     case(1):
         DSPprintSeperator();
         printf("\t--- Service help menu ---\n");
+        printf("Use the following commands followed by enter key:\n");
         printf("'help'\t\t to show this help menu.\n");
         printf("'update'\t to update the interface.\n");
         printf("'water'\t\t to activate the watering system.\n");
@@ -89,6 +90,7 @@ void DSPhelp(int helpType){
         printf("'pump'\t\t to toggle the pump on/off.\n");
         printf("'add'\t\t to select a different active plant.\n");
         printf("'change'\t to change the current active plant.\n");
+        printf("'user'\t\t to go to back to the user menu.\n");
         DSPprintSeperator();
         printf("\n");
         break;

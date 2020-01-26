@@ -1,4 +1,4 @@
-/// @file file_manager.c
+/// @file light_control.c
 /// @author Alwin Rodewijk
 /// @date 25-01-2020
 /// @brief This file is used to control the grow lights.
@@ -10,7 +10,8 @@
 #include "plant_manager.h"
 #include "time_manager.h"
 
-static bool lightState = false;
+/// @brief Represents the state of the grow light.
+bool lightState = false;
 
 /// Initialises the light controler.
 ///

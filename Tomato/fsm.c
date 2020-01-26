@@ -13,7 +13,6 @@
 #include "light_control.h"
 #include "temperature_control.h"
 #include "water_control.h"
-#include "service_control.h"
 #include "plant_manager.h"
 #include "time_manager.h"
 #include "keyboard.h"
@@ -21,7 +20,7 @@
 
 /// @brief Finite state machine states.
 ///
-/// Contains the states used in the finite state machine
+/// Contains the states used in the finite state machine.
 typedef enum {                  /// Error state.
     S_NO,                       /// State at start.
     S_START,                    /// Checking for events state.
@@ -31,15 +30,18 @@ typedef enum {                  /// Error state.
     S_INITIALISED
 } state_e;
 
-static state_e currentState = S_START;
-static actions_e userAction = A_NO;
+/// @brief Used to store the current state off the state machine.
+state_e currentState = S_START;
+/// @brief Used to store the user action returned from the keyboard.
+actions_e userAction = A_NO;
 
-static int timeToPass = 0;
-
+/// @brief Used to store time to be passed.
+/// This variable is used to store the time thats needs to be passed.
+int timeToPass = 0;
 
 /// Initialises the finite state machine
 ///
-/// This is done at the start of this program.
+/// This is done at the start of this program. #timeToPass
 /// @post This will show a text that the system is initialised.
 void FSMinitialise(void){
     DSPshow("Initialised: Finite state machine");
@@ -127,8 +129,10 @@ event_e generateEvent(void)
         case A_LIGHT:
         case A_HEATER:
         case A_PUMP:
+        case A_WATER:
         case A_CHANGE:
         case A_ADD:
+        case A_USER:
         case A_NO:
         default:
             DSPshow("Invalid input.");
@@ -192,8 +196,8 @@ event_e generateEvent(void)
 
 
 /// Uses the global variable #currentState to determine how to process the
-/// received #event.
-/// If an #event is received that should not be in handled in the
+/// received event.
+/// If an event is received that should not be in handled in the
 /// currentState this is considered as a system error.
 /// The switch statements use the default case to show an appropriate message
 /// to the display.
@@ -300,7 +304,8 @@ void eventHandler(event_e event){
             break;
 
         case E_SERVICE:
-            DSPhelp(1);
+            DSPclearScreen();
+            DSPsystemInfo(1);
             userAction = KYBgetAction();
             nextState = S_HANDLE_SERVICE_INPUT;
             break;
@@ -474,9 +479,14 @@ void eventHandler(event_e event){
             DSPsystemInfo(0);
             nextState = S_CHECK_FOR_EVENT;
             break;
+        case E_NON_VALID_INPUT:
+            userAction = KYBgetAction();
+            switchState = false;
+            break;
 
         default:
             DSPshowSystemError("software error in S_HANDLE_SERVICE_INPUT");
+            switchState = false;
             break;
         }
 

@@ -11,13 +11,15 @@
 #include "display.h"
 #include "plant_manager.h"
 
-static bool heaterState = false;
-static double currentTemperature = 10;
+/// @brief Represents the state of the heater.
+bool heaterState = false;
+/// @brief Represents the temperature red by the temperature sensor.
+double currentTemperature = 10;
 
 /// Initialises the temperature controler.
 ///
 /// This is done at the start of this program.
-/// @post This will show a text that the system is initialised.
+/// @post A random seed is set changing the temperature. This will show a text that the system is initialised.
 void TCinitialise(void){
     srand(time(NULL));
     DSPshow("Initialised: Temperature control");

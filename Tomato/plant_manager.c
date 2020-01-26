@@ -11,7 +11,8 @@
 #include "display.h"
 #include "plant_manager.h"
 
-static plant_t currentPlant;
+/// @brief Used to store the currently active plant.
+plant_t currentPlant;
 
 /// Initialises the plant manager.
 ///

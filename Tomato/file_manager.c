@@ -13,24 +13,35 @@
 #include "time_manager.h"
 #include "display.h"
 
-static FILE * logFile;
-static FILE * plantFile;
-static FILE * activePlantFile;
+/// Pointer to the log.txt file used for logging events.
+FILE * logFile;
+/// Pointer to the plants.csv file used to save new plants & and retreive saved plant information.
+FILE * plantFile;
+/// Pointer file the activePlant.txt file used to retreive the active plant.
+FILE * activePlantFile;
 
-static const char fileFolder[PATH_MAX] = "../Tomato/files/";
-static const char logFolder[PATH_MAX] = "log/";
-static const char plantFolder[PATH_MAX] = "plants/";
-static const char plantFileName[PATH_MAX] = "plants.csv";
-static const char activePlantFileName[PATH_MAX] = "activePlant.txt";
+/// @brief Used to store the root directory for the files used in this program.
+const char fileFolder[PATH_MAX] = "../Tomato/files/";
+/// @brief Used to store the log file location.
+const char logFolder[PATH_MAX] = "log/";
+/// @brief Used to store the plant related files in the plants folder.
+const char plantFolder[PATH_MAX] = "plants/";
+/// @brief Used to store the file name off the saved plant types.
+const char plantFileName[PATH_MAX] = "plants.csv";
+/// @brief Used to store the file name off the saved active plant.
+const char activePlantFileName[PATH_MAX] = "activePlant.txt";
 
-static char logFileLocation[PATH_MAX];
-static char plantFileLocation[PATH_MAX];
-static char activePlantFileLocation[PATH_MAX];
+/// @brief Used to write to the log file.
+char logFileLocation[PATH_MAX];
+/// @brief Used to read and write the plant information.
+char plantFileLocation[PATH_MAX];
+/// @brief Used to read and write the currently active plant.
+char activePlantFileLocation[PATH_MAX];
 
 /// Initialises the file manager.
 ///
 /// This is done at the start of this program.
-/// @post This will show a text that the system is initialised.
+/// @post The file locations are set correctly & the log file is created. This will show a text that the system is initialised.
 void FMinitialise(void){
     char buffer[10];
     char dateFormat[30];
@@ -239,8 +250,8 @@ int FMgetAmountOfPlants(void){
 }
 
 /// This function is used to get the amount of saved plants in plants.csv.
-/// @param[in] FMgetPlantName The index used to get the correct plant from plats.csv.
-/// @return A pointer to a string containing the name of the plant using the #plantIndex.
+/// @param[in] plantIndex The index used to get the correct plant from plats.csv.
+/// @return A pointer to a string containing the name of the plant using the plantIndex.
 const char * FMgetPlantName(int plantIndex){
     static plant_t plant;
     plant = FMgetPlant(plantIndex);

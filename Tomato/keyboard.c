@@ -14,8 +14,9 @@
 #define BUFFER_SIZE 30
 #define NUMBER_OF_ACTIONS 11
 
-// Must match with enum actions_e
-static const char actions [NUMBER_OF_ACTIONS][BUFFER_SIZE] = {
+/// @brief Used for comparing the user input.
+/// The order of these strings must match the enum #actions_e.
+const char actions [NUMBER_OF_ACTIONS][BUFFER_SIZE] = {
     "help",
     "update",
     "service",

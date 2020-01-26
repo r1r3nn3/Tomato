@@ -13,10 +13,13 @@
 #include "plant_manager.h"
 #include "time_manager.h"
 
-static struct tm* local;
-static time_t t;
+/// @brief Used to retreive the time information.
+struct tm* local;
+/// @brief Used to get the local time.
+time_t t;
 
-static char timeBuffer[TIME_BUFFER_SIZE];
+/// @brief Used to display the time in a standaard format.
+char timeBuffer[TIME_BUFFER_SIZE];
 
 /// Used inside this file to write the time from the tm object to #timeBuffer.
 void setTimeToBuffer(){
