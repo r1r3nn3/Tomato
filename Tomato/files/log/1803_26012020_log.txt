@@ -1,4 +1,0 @@
-Log file from: 1803_26012020
-Current active plant is: Strawberry
-STATUS: 18:03 - 0 - Watering done
-STATUS: 18:03 - 10 - Heater state: on
