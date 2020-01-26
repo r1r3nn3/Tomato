@@ -1,11 +1,7 @@
-/*
-Create by:      Alwin Rodewijk
-Student nr:     635653
-Class:          ENG-D-B1-ELTa
-Subject:        D-B-INSE-O
-Teacher:        Jos Onokiewicz
-Date:           21-11-2019
-*/
+/// @file display.c
+/// @author Alwin Rodewijk
+/// @date 25-01-2020
+/// @brief This file is used to display text on the terminal window.
 
 #include <stdio.h>
 #include "stdbool.h"
@@ -21,17 +17,21 @@ Date:           21-11-2019
 #include "light_control.h"
 #include "file_manager.h"
 
-
+/// Initialises the display.
+///
+/// This is done at the start of this program.
+/// @post This will show a text that the system is initialised.
 void DSPinitialise(void){
     DSPshow("Initialised: Display");
 }
 
+/// Clears the terminal window.
 void DSPclearScreen(void){
     system("cls");
 }
 
-// systemInfoType = 0 for user menu
-// systemInfoType = 1 for service menu
+/// Displays the system info.
+/// @param[in] systemInfoType Used for displaying user (0) or service (1) info
 void DSPsystemInfo(int systemInfoType){
     // get time ready to print
     char timeBuffer[TIME_BUFFER_SIZE];
@@ -62,8 +62,8 @@ void DSPsystemInfo(int systemInfoType){
 
 }
 
-// helpType = 0 for user menu
-// helpType = 1 for service menu
+/// Displays the help menu.
+/// @param[in] helpType Used for displaying the correct type of help menu, 0 = user, 1 = service.
 void DSPhelp(int helpType){
     switch(helpType){
     case(0):
@@ -97,16 +97,21 @@ void DSPhelp(int helpType){
 
 }
 
+/// Used in the display.c to display a seperator.
 void DSPprintSeperator(){
     printf("-------------------------------------------------------------------------\n");
 }
 
+/// Used to display a string in a standaard format.
+/// @param[in] text A pointer to the text that will be displayed.
 void DSPshow(const char *text)
 {
     printf("## %-" DISPLAY_SIZE_STR "s ##\n", text);
 }
 
-// to avoid logging a interget value, valueForLog > 10000
+/// Used to display simulated system info.
+/// @param[in] text A pointer to the text that will be displayed.
+/// @param[in] valueForLog A interget value to be logged along side the text. If valueForLog > 10000 nothing will be displayed.
 void DSPsimulationSystemInfo(const char *text, int valueForLog)
 {
     char buffer[DISPLAY_SIZE + 10];
@@ -129,6 +134,8 @@ void DSPsimulationSystemInfo(const char *text, int valueForLog)
     printf("-- SIMULATION %-" DISPLAY_SIZE_STR "s\n", buffer);
 }
 
+/// Used to display system errors.
+/// @param[in] text A pointer to the text that will be displayed.
 void DSPshowSystemError(const char *text)
 {
     char buffer[DISPLAY_SIZE + 10];

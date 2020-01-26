@@ -10,11 +10,12 @@
 #define PLANT_MAX_WATER_LEVEL 100
 #define PLANT_MAX_LIGHT_HOURS 24
 
-typedef struct {
-    char name[PLANT_NAME_SIZE];
-    int tempMax;
-    int tempMin;
-    unsigned int waterLevelMax;
+/// This struct is used to save the data required for a plant.
+typedef struct {                    /// Represends the name of the plant.
+    char name[PLANT_NAME_SIZE];     /// Represends the maximum allowed temperature.
+    int tempMax;                    /// Represends the minimum allowed temperature.
+    int tempMin;                    /// Represends the moisture level in %.
+    unsigned int waterLevelMax;     /// Represends the light hours per day.
     int lightHours;
 } plant_t;
 

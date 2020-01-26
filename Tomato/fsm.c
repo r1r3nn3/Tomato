@@ -1,11 +1,7 @@
-/*
-Create by:      Alwin Rodewijk
-Student nr:     635653
-Class:          ENG-D-B1-ELTa
-Subject:        D-B-INSE-O
-Teacher:        Jos Onokiewicz
-Date:           21-11-2019
-*/
+/// @file fsm.c
+/// @author Alwin Rodewijk
+/// @date 25-01-2020
+/// @brief This file is related to the finite state machine.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,12 +19,15 @@ Date:           21-11-2019
 #include "keyboard.h"
 #include "file_manager.h"
 
-typedef enum {
-    S_NO,
-    S_START,
-    S_CHECK_FOR_EVENT,
-    S_HANDLE_USER_INPUT,
-    S_HANDLE_SERVICE_INPUT,
+/// @brief Finite state machine states.
+///
+/// Contains the states used in the finite state machine
+typedef enum {                  /// Error state.
+    S_NO,                       /// State at start.
+    S_START,                    /// Checking for events state.
+    S_CHECK_FOR_EVENT,          /// Handling preveously asked user input in this state.
+    S_HANDLE_USER_INPUT,        /// Handling preveously asked service input in this state.
+    S_HANDLE_SERVICE_INPUT,     /// The software is initialised in this state.
     S_INITIALISED
 } state_e;
 
@@ -37,11 +36,20 @@ static actions_e userAction = A_NO;
 
 static int timeToPass = 0;
 
+
+/// Initialises the finite state machine
+///
+/// This is done at the start of this program.
+/// @post This will show a text that the system is initialised.
 void FSMinitialise(void){
     DSPshow("Initialised: Finite state machine");
 }
 
-
+/// Because we do not buffer events in an event queue, we send in the
+/// current state, #currentState, only events that can be handled.
+/// Implementing buffering using a queue and multi-threading is outside
+/// the scope of this introduction to C programming.
+/// @return Generated event for the #eventHandler function.
 event_e generateEvent(void)
 {
     event_e evnt = E_NO;
@@ -182,6 +190,17 @@ event_e generateEvent(void)
     return evnt;
 }
 
+
+/// Uses the global variable #currentState to determine how to process the
+/// received #event.
+/// If an #event is received that should not be in handled in the
+/// currentState this is considered as a system error.
+/// The switch statements use the default case to show an appropriate message
+/// to the display.
+/// It is necessary to give in all default cases the nextState an appropriate
+/// value to avoid undefined behaviour.
+/// @param event This enum is the event that wil be handled in the #currentState.
+/// @post Updated #currentState by nextSate.
 void eventHandler(event_e event){
 
     state_e nextState = S_NO;
@@ -470,6 +489,9 @@ void eventHandler(event_e event){
     }
 }
 
+/// Initialises all subsystems (devices) and puts an initial text to the
+/// display.
+/// @return #E_CONTINUE is returned when the inistialisation is done.
 event_e TAGinitialise(void){
     DSPinitialise();
     KYBinitialise();

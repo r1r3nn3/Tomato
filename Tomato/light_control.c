@@ -1,11 +1,7 @@
-/*
-Create by:      Alwin Rodewijk
-Student nr:     635653
-Class:          ENG-D-B1-ELTa
-Subject:        D-B-INSE-O
-Teacher:        Jos Onokiewicz
-Date:           21-11-2019
-*/
+/// @file file_manager.c
+/// @author Alwin Rodewijk
+/// @date 25-01-2020
+/// @brief This file is used to control the grow lights.
 
 #include <stdio.h>
 #include "stdbool.h"
@@ -16,10 +12,16 @@ Date:           21-11-2019
 
 static bool lightState = false;
 
+/// Initialises the light controler.
+///
+/// This is done at the start of this program.
+/// @post This will show a text that the system is initialised.
 void LCinitialise(void){
     DSPshow("Initialised: Light control");
 }
 
+/// This function is used to toggle the grow light.
+/// @post the #lightState is switched to a different state.
 void LCtoggleLight(void){
     lightState = !lightState;
     if(lightState){
@@ -29,10 +31,12 @@ void LCtoggleLight(void){
     }
 }
 
+/// This function is used to get #lightState.
 bool LCgetState(void){
     return lightState;
 }
 
+/// This function is used to check if #lightState needs to be changed.
 bool LClightCheck(void){
     if(LTgetHours() >= PTgetLightHours()){
         if(LCgetState()){

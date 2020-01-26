@@ -1,11 +1,7 @@
-/*
-Create by:      Alwin Rodewijk
-Student nr:     635653
-Class:          ENG-D-B1-ELTa
-Subject:        D-B-INSE-O
-Teacher:        Jos Onokiewicz
-Date:           21-11-2019
-*/
+/// @file file_manager.c
+/// @author Alwin Rodewijk
+/// @date 25-01-2020
+/// @brief This file is used to read or write to files.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,6 +27,10 @@ static char logFileLocation[PATH_MAX];
 static char plantFileLocation[PATH_MAX];
 static char activePlantFileLocation[PATH_MAX];
 
+/// Initialises the file manager.
+///
+/// This is done at the start of this program.
+/// @post This will show a text that the system is initialised.
 void FMinitialise(void){
     char buffer[10];
     char dateFormat[30];
@@ -106,6 +106,8 @@ void FMinitialise(void){
     DSPshow("Initialised: File manager");
 }
 
+/// This function is used to write to the file that stores the current active plant.
+/// @param[in] index This index will be writen to the file.
 void FMsetActivePlant(int index){
     activePlantFile = fopen(activePlantFileLocation, "w");
     fprintf(activePlantFile, "%i\n", index);
@@ -119,6 +121,8 @@ void FMsetActivePlant(int index){
     DSPsimulationSystemInfo(buffer, 10000);
 }
 
+/// This function is used to get the index saved in the file that stores the current active plant.
+/// @return The index used to retreive the the plant information from plants.csv.
 int FMgetActivePlant(void){
     int returnValue;
     int counter = 0;
@@ -140,7 +144,9 @@ int FMgetActivePlant(void){
     return returnValue;
 }
 
-//message types: 1 = error, 2 = status
+/// Used to write a text to the log file.
+/// @param[in] messageType Deffines the type of messages that will be logged, 1 = error, 2 = status.
+/// @param[in] text A pointer to the text that will be logged.
 void FMwriteToLog(int messageType,const char *text){
     logFile = fopen(logFileLocation, "r+");
     fseek(logFile, 0, SEEK_END);
@@ -163,7 +169,8 @@ void FMwriteToLog(int messageType,const char *text){
     fclose(logFile);
 }
 
-// plant_t is empty index is wrong
+/// Used to get the struct plant_t from the plants.csv file.
+/// @param[in] plantIndex The index used to find the correct plant in the plants.csv file.
 plant_t FMgetPlant(unsigned int plantIndex){
     plant_t returnPlant;
     char buffer[100];
@@ -206,6 +213,8 @@ plant_t FMgetPlant(unsigned int plantIndex){
     return returnPlant;
 }
 
+/// This function is used to get the amount of saved plants in plants.csv.
+/// @return The amount of plant saved in plants.csv.
 int FMgetAmountOfPlants(void){
     int returnValue = 0;
     char buffer[100];
@@ -229,6 +238,9 @@ int FMgetAmountOfPlants(void){
     return  returnValue;
 }
 
+/// This function is used to get the amount of saved plants in plants.csv.
+/// @param[in] FMgetPlantName The index used to get the correct plant from plats.csv.
+/// @return A pointer to a string containing the name of the plant using the #plantIndex.
 const char * FMgetPlantName(int plantIndex){
     static plant_t plant;
     plant = FMgetPlant(plantIndex);
@@ -236,6 +248,9 @@ const char * FMgetPlantName(int plantIndex){
     return plant.name;
 }
 
+/// Used to save a plant to the plants.csv file.
+/// @param[in] newPlant A struc containing the information that will be saved in plants.csv.
+/// @post A new plant will be saved in the plants.csv file.
 void FMsaveNewPlant(plant_t newPlant){
     plantFile = fopen(plantFileLocation, "r+");
     fseek(plantFile, 0, SEEK_END);

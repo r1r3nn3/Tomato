@@ -3,18 +3,18 @@
 
 //--------------------keyboard--------------------//
 
-typedef enum{
-    A_HELP,
-    A_UPDATE,
-    A_SERVICE,
-    A_TIME,
-    A_WATER,
-    A_LIGHT,
-    A_HEATER,
-    A_PUMP,
-    A_CHANGE,
-    A_ADD,
-    A_USER,
+typedef enum{   /// Defines the action help used to display the help menu.
+    A_HELP,     /// Defines the action update used to clear and print the system information.
+    A_UPDATE,   /// Defines the action service used to enter service mode.
+    A_SERVICE,  /// Defines the action time used to increase time.
+    A_TIME,     /// Defines the action water used to manualy water the plant.
+    A_WATER,    /// Defines the action light used to toggle the grow light.
+    A_LIGHT,    /// Defines the action heater used to toggle the heater.
+    A_HEATER,   /// Defines the action pump used to toggle the pump.
+    A_PUMP,     /// Defines the action change used to change the current active plant.
+    A_CHANGE,   /// Defines the action add used to add a new plant.
+    A_ADD,      /// Defines the action used to enter user mode.
+    A_USER,     /// Defines the action used as a error state.
     A_NO
 } actions_e;
 

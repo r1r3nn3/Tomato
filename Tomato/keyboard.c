@@ -1,11 +1,7 @@
-/*
-Create by:      Alwin Rodewijk
-Student nr:     635653
-Class:          ENG-D-B1-ELTa
-Subject:        D-B-INSE-O
-Teacher:        Jos Onokiewicz
-Date:           21-11-2019
-*/
+/// @file keyboard.c
+/// @author Alwin Rodewijk
+/// @date 25-01-2020
+/// @brief This file is read input from the terminal window.
 
 #include <stdio.h>
 #include <ctype.h>
@@ -18,7 +14,7 @@ Date:           21-11-2019
 #define BUFFER_SIZE 30
 #define NUMBER_OF_ACTIONS 11
 
-/* Must match with enum actions_e */
+// Must match with enum actions_e
 static const char actions [NUMBER_OF_ACTIONS][BUFFER_SIZE] = {
     "help",
     "update",
@@ -33,10 +29,16 @@ static const char actions [NUMBER_OF_ACTIONS][BUFFER_SIZE] = {
     "user"
 };
 
+/// Initialises the keyboard.
+///
+/// This is done at the start of this program.
+/// @post This will show a text that the system is initialised.
 void KYBinitialise(void){
     DSPshow("Initialised: Keyboard");
 }
 
+/// This function is used to read a string from the terminal window.
+/// @return A pointer to a string containing the input from the user.
 char * KYBgetString(void){
     static char buffer[BUFFER_SIZE];
     unsigned int i = 0;
@@ -52,6 +54,8 @@ char * KYBgetString(void){
     return buffer;
 }
 
+/// This function is used to read a character from the terminal window.
+/// @return A character containing the input from the user.
 char KYBgetchar(void)
 {
    char c = getchar();
@@ -63,6 +67,9 @@ char KYBgetchar(void)
    return c;
 }
 
+/// This function is used to read a interger from the terminal window.
+/// @param[in] ifWrongValue This value will be returned when the user entered a wrong value.
+/// @return A interger containing the input from the user.
 int KYBgetint(int ifWrongValue){
     int input = 0;
     int nOk = scanf(" %d", &input);
@@ -78,8 +85,8 @@ int KYBgetint(int ifWrongValue){
     return input;
 }
 
-
-// Recomendation: use hash table or dictionary
+/// This function is used to read a action from the terminal window.
+/// @return A action_e according to the user input.
 actions_e KYBgetAction(void){
     actions_e returnValue;
 
