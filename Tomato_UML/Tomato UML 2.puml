@@ -1,0 +1,65 @@
+@startuml
+
+title Tomato - The Automatic Greenhouse
+
+[*] --> Initialised : E_START / TAGinitialise()
+Initialised --> CheckForEvent : E_CONTINEU
+Error --> CheckForEvent : E_RESOLVE_ERROR
+
+CheckForEvent --> PassTime : E_PASS_TIME
+PassTime --> CheckForEvent : E_TIME_PASSED
+
+CheckForEvent --> ChangeLight : E_LIGHT_TOGGLE
+ChangeLight --> CheckForEvent : E_LIGHT_CHANGED
+ChangeLight --> Error : E_LIGHT_ERROR
+
+CheckForEvent --> ChangeHeater : E_HEATER_TOGGLE
+ChangeHeater --> CheckForEvent : E_HEATER_CHANGED
+ChangeHeater --> Error : E_HEATER_ERROR
+
+CheckForEvent --> WaterPlant : E_WATER_TOGGLE
+WaterPlant --> CheckForEvent : E_WATER_CHANGED
+WaterPlant --> Error : E_WATER_ERROR
+
+CheckForEvent --> HandleUserInput : E_ASK_USER_INPUT / evnt = askUser();
+
+HandleUserInput --> HandleUserInput : E_NON_VALID_INPUT
+
+HandleUserInput --> PrintUserHelpMenu : E_HELP
+PrintUserHelpMenu --> HandleUserInput : E_PRINT_HELP_MENU
+
+HandleUserInput --> UpdateSystemInfo : E_UPDATE
+UpdateSystemInfo --> HandleUserInput : E_UPDATE_SYSTEM_INFO
+
+HandleUserInput --> PassTime : E_INCREASE_TIME
+
+HandleUserInput --> HandleServiceInput : E_SERVICE
+
+HandleServiceInput --> CheckForEvent : E_USER
+
+HandleServiceInput --> AddPlant : E_ADD_PLANT
+AddPlant --> HandleServiceInput : E_ADD_PLANT_TO_FILE
+
+HandleServiceInput --> ChangePlant : E_CHANGE_PLANT
+ChangePlant --> HandleServiceInput : E_CHANGE_ACTIVE_PLANT
+
+HandleServiceInput --> TogglePump : E_CHANGE_PUMP
+TogglePump --> HandleServiceInput : E_PUMP_TOGGLE
+
+HandleServiceInput --> ToggleHeater : E_CHANGE_HEATER
+ToggleHeater --> HandleServiceInput : E_HEATER_TOGGLE
+
+HandleServiceInput --> ToggleLight : E_CHANGE_LIGHT
+ToggleLight --> HandleServiceInput : E_LIGHT_TOGGLE
+
+HandleServiceInput --> HandleServiceInput : E_NON_VALID_INPUT
+
+
+
+note left of CheckForEvent
+	Checks are in this order:
+    Light, heater, water
+    Pass time
+end note
+
+@enduml

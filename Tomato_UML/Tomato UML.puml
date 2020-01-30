@@ -3,33 +3,76 @@
 title Tomato - The Automatic Greenhouse
 
 [*] --> Initialised : E_START / TAGinitialise()
-Initialised --> CheckForEvent : E_CONTINEU
+Initialised --> CheckOperationMode : E_CONTINEU
 
-CheckForEvent --> CheckForEvent : E_PASS_TIME
-CheckForEvent --> CheckForEvent : E_LIGHT_TOGGLE
-CheckForEvent --> CheckForEvent : E_HEATER_TOGGLE
-CheckForEvent --> CheckForEvent : E_WATER_PLANT
-CheckForEvent --> HandleUserInput : E_ASK_USER_INPUT
+CheckOperationMode --> CheckTimeToPass : E_USER
 
-HandleUserInput --> HandleUserInput : E_NON_VALID_INPUT
-HandleUserInput --> HandleUserInput : E_HELP
-HandleUserInput --> HandleUserInput : E_UPDATE
-HandleUserInput --> CheckForEvent : E_INCREASE_TIME
-HandleUserInput --> HandleServiceInput : E_SERVICE
+CheckTimeToPass --> PassTime : E_PASS_TIME
+CheckTimeToPass --> CheckLightState : E_DONT_PASS_TIME
+PassTime --> CheckLightState : E_TIME_PASSED
+PassTime : TimeToPass -= x;
 
-HandleServiceInput --> HandleServiceInput : E_ADD_PLANT
-HandleServiceInput --> HandleServiceInput : E_CHANGE_PLANT
-HandleServiceInput --> HandleServiceInput : E_PUMP_TOGGLE
-HandleServiceInput --> HandleServiceInput : E_HEATER_TOGGLE
-HandleServiceInput --> HandleServiceInput : E_LIGHT_TOGGLE
-HandleServiceInput --> HandleServiceInput : E_NON_VALID_INPUT
-HandleServiceInput --> CheckForEvent : E_USER
+CheckLightState --> ToggleLight : E_TOGGLE_LIGHT
+ToggleLight --> CheckLightState : E_LIGHT_TOGGLED
+CheckLightState --> Error : E_LIGHT_ERROR
+CheckLightState --> CheckHeaterState : E_LIGHT_STATE_OK
 
 
-note left of CheckForEvent
-	Checks are in this order:
-    Light, heater, water
-    Pass time
-end note
+CheckHeaterState --> ToggleHeater : E_TOGGLE_HEATER
+ToggleHeater --> CheckHeaterState : E_HEATER_TOGGLED
+CheckHeaterState --> Error : E_HEATER_ERROR
+CheckHeaterState --> CheckWaterLevel : E_HEATER_STATE_OK
+
+CheckWaterLevel --> WaterPlant : E_WATER_PLANT
+WaterPlant --> CheckWaterLevel : E_PLANT_WATERED
+CheckWaterLevel --> Error : E_WATERING_ERROR
+CheckWaterLevel --> CheckMoreTimeToPass : E_PLANT_WATER_OK
+
+Error --> CheckOperationMode : E_RESOLVE_ERROR
+
+CheckMoreTimeToPass --> CheckTimeToPass : E_TIME_TO_PASS
+CheckMoreTimeToPass --> WaitForUserInput : E_NOT_TIME_TO_PASS
+
+WaitForUserInput --> WaitForUserInput : E_NON_VALID_INPUT
+
+WaitForUserInput --> PrintHelp : E_HELP
+PrintHelp --> WaitForUserInput : E_HELP_PRINTED
+
+WaitForUserInput --> IncreaseTime : E_TIME
+IncreaseTime --> CheckTimeToPass : E_INCREASE_TIME
+
+WaitForUserInput --> UpdateSystemInfo : E_UPDATE
+UpdateSystemInfo --> WaitForUserInput : E_SYSTEM_INFO_UPDATED
+
+CheckOperationMode --> WaitForServiceInput : E_SERVICE
+
+WaitForServiceInput --> WaitForServiceInput : E_NON_VALID_INPUT
+WaitForServiceInput --> CheckTimeToPass : E_USER
+
+WaitForServiceInput --> AskNewPlantInfo : E_ADD
+AskNewPlantInfo --> WaitForServiceInput : E_SAVE_NEW_PLANT
+AskNewPlantInfo --> Error : E_ADD_ERROR
+
+WaitForServiceInput --> AskForNewActivePlant : E_CHANGE
+AskForNewActivePlant --> WaitForServiceInput : E_CHANGE_ACTIVE_PLANT
+AskForNewActivePlant --> Error : E_CHANGE_ERROR
+
+WaitForServiceInput --> ServiceToggleHeater : E_HEATER
+ServiceToggleHeater --> WaitForServiceInput : E_HEATER_TOGGLED
+ServiceToggleHeater --> Error : E_HEATER_ERROR
+
+WaitForServiceInput --> ServiceTogglePump : E_PUMP
+ServiceTogglePump --> WaitForServiceInput : E_PUMP_TOGGLED
+ServiceTogglePump --> Error : E_PUMP_ERROR
+
+WaitForServiceInput --> ServiceToggleLight : E_LIGHT
+ServiceToggleLight --> WaitForServiceInput : E_LIGHT_TOGGLED
+ServiceToggleLight --> Error : E_LIGHT_ERROR
+
+WaitForServiceInput --> ServiceWaterPlant : E_WATER
+ServiceWaterPlant --> WaitForServiceInput : E_PLANT_WATERED
+ServiceWaterPlant --> Error : E_WATER_ERROR
+
+Error --> WaitForServiceInput : E_RESOLVE_ERROR
 
 @enduml
