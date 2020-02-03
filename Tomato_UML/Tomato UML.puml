@@ -2,8 +2,8 @@
 
 title Tomato - The Automatic Greenhouse
 
-[*] --> Initialised : E_START / TAGinitialise()
-Initialised --> CheckOperationMode : E_CONTINEU
+[*] --> Initialise : E_START / TAGinitialise()
+Initialise --> CheckOperationMode : E_CONTINEU
 
 CheckOperationMode --> CheckTimeToPass : E_USER
 
@@ -12,18 +12,18 @@ CheckTimeToPass --> CheckLightState : E_DONT_PASS_TIME
 PassTime --> CheckLightState : E_TIME_PASSED
 PassTime : TimeToPass -= x;
 
-CheckLightState --> ToggleLight : E_TOGGLE_LIGHT
+CheckLightState --> ToggleLight : E_LIGHT_TOGGLE
 ToggleLight --> CheckLightState : E_LIGHT_TOGGLED
 CheckLightState --> Error : E_LIGHT_ERROR
 CheckLightState --> CheckHeaterState : E_LIGHT_STATE_OK
 
 
-CheckHeaterState --> ToggleHeater : E_TOGGLE_HEATER
+CheckHeaterState --> ToggleHeater : E_HEATER_TOGGLE
 ToggleHeater --> CheckHeaterState : E_HEATER_TOGGLED
 CheckHeaterState --> Error : E_HEATER_ERROR
 CheckHeaterState --> CheckWaterLevel : E_HEATER_STATE_OK
 
-CheckWaterLevel --> WaterPlant : E_WATER_PLANT
+CheckWaterLevel --> WaterPlant : E_PLANT_WATER
 WaterPlant --> CheckWaterLevel : E_PLANT_WATERED
 CheckWaterLevel --> Error : E_WATERING_ERROR
 CheckWaterLevel --> CheckMoreTimeToPass : E_PLANT_WATER_OK
@@ -31,12 +31,12 @@ CheckWaterLevel --> CheckMoreTimeToPass : E_PLANT_WATER_OK
 Error --> CheckOperationMode : E_RESOLVE_ERROR
 
 CheckMoreTimeToPass --> CheckTimeToPass : E_TIME_TO_PASS
-CheckMoreTimeToPass --> WaitForUserInput : E_NOT_TIME_TO_PASS
+CheckMoreTimeToPass --> WaitForUserInput : E_NO_TIME_TO_PASS
 
 WaitForUserInput --> WaitForUserInput : E_NON_VALID_INPUT
 
-WaitForUserInput --> PrintHelp : E_HELP
-PrintHelp --> WaitForUserInput : E_HELP_PRINTED
+WaitForUserInput --> PrintUserHelp : E_HELP
+PrintUserHelp --> WaitForUserInput : E_HELP_PRINTED
 
 WaitForUserInput --> IncreaseTime : E_TIME
 IncreaseTime --> CheckTimeToPass : E_INCREASE_TIME
@@ -44,18 +44,21 @@ IncreaseTime --> CheckTimeToPass : E_INCREASE_TIME
 WaitForUserInput --> UpdateSystemInfo : E_UPDATE
 UpdateSystemInfo --> WaitForUserInput : E_SYSTEM_INFO_UPDATED
 
+WaitForUserInput --> CheckOperationMode : E_SERVICE
+
 CheckOperationMode --> WaitForServiceInput : E_SERVICE
 
+WaitForServiceInput --> PrintServiceHelp : E_HELP
+PrintServiceHelp --> WaitForServiceInput : E_HELP_PRINTED
+
 WaitForServiceInput --> WaitForServiceInput : E_NON_VALID_INPUT
-WaitForServiceInput --> CheckTimeToPass : E_USER
+WaitForServiceInput --> CheckOperationMode : E_USER
 
 WaitForServiceInput --> AskNewPlantInfo : E_ADD
-AskNewPlantInfo --> WaitForServiceInput : E_SAVE_NEW_PLANT
-AskNewPlantInfo --> Error : E_ADD_ERROR
+AskNewPlantInfo --> WaitForServiceInput : E_NEW_PLANT_SAVED
 
 WaitForServiceInput --> AskForNewActivePlant : E_CHANGE
 AskForNewActivePlant --> WaitForServiceInput : E_CHANGE_ACTIVE_PLANT
-AskForNewActivePlant --> Error : E_CHANGE_ERROR
 
 WaitForServiceInput --> ServiceToggleHeater : E_HEATER
 ServiceToggleHeater --> WaitForServiceInput : E_HEATER_TOGGLED
@@ -72,7 +75,5 @@ ServiceToggleLight --> Error : E_LIGHT_ERROR
 WaitForServiceInput --> ServiceWaterPlant : E_WATER
 ServiceWaterPlant --> WaitForServiceInput : E_PLANT_WATERED
 ServiceWaterPlant --> Error : E_WATER_ERROR
-
-Error --> WaitForServiceInput : E_RESOLVE_ERROR
 
 @enduml

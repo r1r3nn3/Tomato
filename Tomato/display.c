@@ -23,17 +23,21 @@
 /// This is done at the start of this program.
 /// @post This will show a text that the system is initialised.
 void DSPinitialise(void){
+    DSPclearScreen();
     DSPshow("Initialised: Display");
 }
+
 
 /// Clears the terminal window.
 void DSPclearScreen(void){
     system("cls");
 }
 
+
 /// Displays the system info.
 /// @param[in] systemInfoType Used for displaying user (0) or service (1) info
-void DSPsystemInfo(int systemInfoType){
+/// @return A event that the system info has been updated.
+event_e DSPsystemInfo(int systemInfoType){
     // get time ready to print
     char timeBuffer[TIME_BUFFER_SIZE];
     LTgetTime(timeBuffer);
@@ -61,11 +65,14 @@ void DSPsystemInfo(int systemInfoType){
     DSPprintSeperator();
     printf("\n");
 
+    return E_SYSTEM_INFO_UPDATED;
 }
+
 
 /// Displays the help menu.
 /// @param[in] helpType Used for displaying the correct type of help menu, 0 = user, 1 = service.
-void DSPhelp(int helpType){
+/// @return A event that the help menu has been printed.
+event_e DSPhelp(int helpType){
     switch(helpType){
     case(0):
         DSPprintSeperator();
@@ -97,20 +104,24 @@ void DSPhelp(int helpType){
         break;
     }
 
-
+    return E_HELP_PRINTED;
 }
+
 
 /// Used in the display.c to display a seperator.
 void DSPprintSeperator(){
     printf("-------------------------------------------------------------------------\n");
 }
 
+
 /// Used to display a string in a standaard format.
 /// @param[in] text A pointer to the text that will be displayed.
 void DSPshow(const char *text)
 {
     printf("## %-" DISPLAY_SIZE_STR "s ##\n", text);
+    printf("\n");
 }
+
 
 /// Used to display simulated system info.
 /// @param[in] text A pointer to the text that will be displayed.
@@ -135,7 +146,9 @@ void DSPsimulationSystemInfo(const char *text, int valueForLog)
     strcat(buffer, " - ");
     strcat(buffer, text);
     printf("-- SIMULATION %-" DISPLAY_SIZE_STR "s\n", buffer);
+    printf("\n");
 }
+
 
 /// Used to display system errors.
 /// @param[in] text A pointer to the text that will be displayed.
@@ -148,6 +161,6 @@ void DSPshowSystemError(const char *text)
     strcat(buffer, text);
 
     FMwriteToLog(1, buffer);
-    printf("## SYSTEM ERROR %-" DISPLAY_SIZE_STR "s ##\n", text);
+    printf("!! SYSTEM ERROR %-" DISPLAY_SIZE_STR "s\n", text);
+    printf("\n");
 }
-

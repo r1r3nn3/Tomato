@@ -1,0 +1,6 @@
+Log file from: 1538_01022020
+Current active plant is: test
+STATUS: 15:38 - 10 - Heater state: on
+STATUS: 15:38 - 0 - Watering done
+ERROR: 15:38 - S_NO
+ERROR: 15:38 - S_NO in eventHandler: 0

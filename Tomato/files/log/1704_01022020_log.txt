@@ -1,0 +1,5 @@
+Log file from: 1704_01022020
+Current active plant is: Strawberry
+STATUS: 17:04 - 10 - Heater state: on
+STATUS: 17:04 - 0 - Watering done
+STATUS: 17:04 - Service mode entered.

@@ -9,13 +9,16 @@
 #include "stdbool.h"
 #include "time.h"
 
+#include "temperature_control.h"
 #include "display.h"
 #include "plant_manager.h"
 
 /// @brief Represents the state of the heater.
 bool heaterState = false;
+
 /// @brief Represents the temperature red by the temperature sensor.
 double currentTemperature = 10;
+
 
 /// Initialises the temperature controler.
 ///
@@ -23,24 +26,30 @@ double currentTemperature = 10;
 /// @post A random seed is set changing the temperature. This will show a text that the system is initialised.
 void TCinitialise(void){
     srand(time(NULL));
+    heaterState = false;
+    currentTemperature = 10;
     DSPshow("Initialised: Temperature control");
 }
 
-/// This function is used to toggle the heater.
-/// @post the #heaterState is switched to a different state.
-void TCtoggleHeater(void){
+
+/// This function toggles the heater state.
+/// @return A event that the heater state is toggled.
+event_e TCtoggleHeater(void){
     heaterState = !heaterState;
     if(heaterState){
         DSPsimulationSystemInfo("Heater state: on", (int)currentTemperature);
     } else {
         DSPsimulationSystemInfo("Heater state: off", (int)currentTemperature);
     }
+    return E_HEATER_TOGGLED;
 }
+
 
 /// This function is used to get #heaterState.
 bool TCgetHeaterState(void){
     return heaterState;
 }
+
 
 /// This function is used to get #currentTemperature.
 double TCgetCurrentTemperature(void){
@@ -48,16 +57,21 @@ double TCgetCurrentTemperature(void){
 }
 
 
-/// This function is used to check if #lightState needs to be changed.
-/// @return The return value represents the following: -1 = to cold, 0 = oke, 1 = to hot.
-int TCtemperatureCheck(void){
-    if(currentTemperature > PTgetTempMax()){
-        return 1;
-    } else if(currentTemperature < PTgetTempMin()){
-        return -1;
+/// This function is used to check the temperature compered to the heater state.
+/// @return A event that represants the if the heater needs to be toggled or if the temperature is dangerousely high.
+event_e TCtemperatureCheck(void){
+    if(currentTemperature > PLANT_MAX_TEMP_MAX + 10){
+        return E_HEATER_ERROR;
     }
-    return 0;
+
+    if(currentTemperature > PTgetTempMax() && heaterState){
+        return E_HEATER_TOGGLE;
+    } else if(currentTemperature < PTgetTempMin() && !heaterState){
+        return E_HEATER_TOGGLE;
+    }
+    return E_HEATER_STATE_OK;
 }
+
 
 /// This function is used to change the #currentTemperature with a random value.
 /// The #heaterState dissides if the change is positive or negative.

@@ -9,6 +9,7 @@
 #include "stdbool.h"
 #include "time.h"
 
+#include "water_control.h"
 #include "display.h"
 #include "time_manager.h"
 #include "plant_manager.h"
@@ -18,27 +19,27 @@ bool pumpState = false;
 /// @brief Represents the soil moisture in percentage red by a sensor.
 unsigned int plantWaterLevel = 0;
 
-time_t wateringTimer;
 
 /// Initialises the water controler.
 ///
 /// This is done at the start of this program.
 /// @post This will show a text that the system is initialised.
 void WCinitialise(void){
+    pumpState = false;
     srand(time(NULL));
-    wateringTimer = LTgetTimeObject();
     DSPshow("Initialised: Water control");
 }
 
-/// This function is used to toggle the pump.
-/// @post the #pumpState is switched to a different state.
-void WCtogglePump(void){
+/// This function toggles the pump.
+/// @return A event that the pump has been toggled.
+event_e WCtogglePump(void){
     pumpState = !pumpState;
     if(pumpState){
         DSPsimulationSystemInfo("Pump state: on", (int)plantWaterLevel);
     } else {
         DSPsimulationSystemInfo("Pump state: off", (int)plantWaterLevel);
     }
+    return E_PUMP_TOGGLED;
 }
 
 /// This function is used to get #pumpState.
@@ -52,29 +53,23 @@ unsigned int WCgetPlantWaterLevel(void){
 }
 
 /// This function is used to water the plant.
-/// @post The plant is watered to the maximum water level off the current plant.
-void WCwaterPlant(void){
-    wateringTimer = LTgetTimeObject();
+/// @return A event that the plant is watered.
+event_e WCwaterPlant(void){
     int tempPlantWaterLevel = (int)plantWaterLevel;
     plantWaterLevel = PTgetWaterLevelMax();
     DSPsimulationSystemInfo("Watering done", tempPlantWaterLevel);
+    return E_WATERED_PLANT;
 }
 
 /// This function checks if watering is required.
-bool WCwateringCheck(void){
-    bool returnValue = false;
-
-    if(wateringTimer + (PTgetWaterLevelMax() * 60) <= LTgetTimeObject()){
-        // watering on timer
-        returnValue = true;
-    }
-
+/// @return A event that the plant is watered.
+event_e WCwateringCheck(void){
     if(plantWaterLevel <= PTgetWaterLevelMax() / 3){
         // watering on sensor
-        returnValue = true;
+        return E_WATER_PLANT;
     }
 
-    return returnValue;
+    return E_PLANT_WATER_OK;
 }
 
 /// This function is used to decrease the #plantWaterLevel with a random value.

@@ -15,6 +15,7 @@
 #define BUFFER_SIZE 30
 #define NUMBER_OF_ACTIONS 11
 
+
 /// @brief Used for comparing the user input.
 /// The order of these strings must match the enum #actions_e.
 const char actions [NUMBER_OF_ACTIONS][BUFFER_SIZE] = {
@@ -31,6 +32,7 @@ const char actions [NUMBER_OF_ACTIONS][BUFFER_SIZE] = {
     "user"
 };
 
+
 /// Initialises the keyboard.
 ///
 /// This is done at the start of this program.
@@ -38,6 +40,7 @@ const char actions [NUMBER_OF_ACTIONS][BUFFER_SIZE] = {
 void KYBinitialise(void){
     DSPshow("Initialised: Keyboard");
 }
+
 
 /// This function is used to read a string from the terminal window.
 /// @return A pointer to a string containing the input from the user.
@@ -56,6 +59,7 @@ char * KYBgetString(void){
     return buffer;
 }
 
+
 /// This function is used to read a character from the terminal window.
 /// @return A character containing the input from the user.
 char KYBgetchar(void)
@@ -68,6 +72,7 @@ char KYBgetchar(void)
    }
    return c;
 }
+
 
 /// This function is used to read a interger from the terminal window.
 /// @param[in] ifWrongValue This value will be returned when the user entered a wrong value.
@@ -87,10 +92,11 @@ int KYBgetint(int ifWrongValue){
     return input;
 }
 
+
 /// This function is used to read a action from the terminal window.
 /// @return A action_e according to the user input.
 actions_e KYBgetAction(void){
-    actions_e returnValue;
+    actions_e returnValue = A_NO;
 
     char buffer[BUFFER_SIZE];
     bool validAction = false;

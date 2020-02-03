@@ -1,0 +1,8 @@
+Log file from: 1612_01022020
+Current active plant is: test
+STATUS: 16:12 - 10 - Heater state: on
+STATUS: 16:12 - 0 - Watering done
+STATUS: 23:42 - 10 - Watering done
+STATUS: 00:12 - Light state: on
+STATUS: 08:12 - Light state: off
+ERROR: 08:12 - Error state reached.

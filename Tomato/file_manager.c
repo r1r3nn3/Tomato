@@ -183,6 +183,7 @@ void FMwriteToLog(int messageType,const char *text){
 
 /// Used to get the struct plant_t from the plants.csv file.
 /// @param[in] plantIndex The index used to find the correct plant in the plants.csv file.
+/// @return The plant in the format #plant_t from the plants.csv file using the #plantIndex.
 plant_t FMgetPlant(unsigned int plantIndex){
     plant_t returnPlant;
     char buffer[100];
@@ -251,7 +252,7 @@ int FMgetAmountOfPlants(void){
 }
 
 /// This function is used to get the amount of saved plants in plants.csv.
-/// @param[in] plantIndex The index used to get the correct plant from plats.csv.
+/// @param[in] plantIndex The index used to get the correct plant from plants.csv.
 /// @return A pointer to a string containing the name of the plant using the plantIndex.
 const char * FMgetPlantName(int plantIndex){
     static plant_t plant;
@@ -263,7 +264,8 @@ const char * FMgetPlantName(int plantIndex){
 /// Used to save a plant to the plants.csv file.
 /// @param[in] newPlant A struc containing the information that will be saved in plants.csv.
 /// @post A new plant will be saved in the plants.csv file.
-void FMsaveNewPlant(plant_t newPlant){
+/// @return A event that the #newPlant has been saved to the plants.csv file.
+event_e FMsaveNewPlant(plant_t newPlant){
     plantFile = fopen(plantFileLocation, "r+");
     fseek(plantFile, 0, SEEK_END);
     fprintf(plantFile, "%s;%i;%i;%i;%i\n", newPlant.name, newPlant.tempMax, newPlant.tempMin, newPlant.lightHours, newPlant.waterLevelMax);
@@ -275,4 +277,5 @@ void FMsaveNewPlant(plant_t newPlant){
     strcat(buffer, newPlant.name);
 
     DSPsimulationSystemInfo(buffer, 10000);
+    return E_NEW_PLANT_SAVED;
 }

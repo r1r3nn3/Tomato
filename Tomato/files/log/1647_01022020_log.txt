@@ -1,0 +1,2 @@
+Log file from: 1647_01022020
+Current active plant is: test
