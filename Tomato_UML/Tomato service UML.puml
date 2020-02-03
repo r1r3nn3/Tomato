@@ -1,0 +1,43 @@
+@startuml
+
+title Tomato - The Automatic Greenhouse
+
+[*] --> Initialise : E_START / TAGinitialise()
+Initialise --> CheckOperationMode : E_CONTINEU
+
+CheckOperationMode --> WaitForServiceInput : E_SERVICE
+
+WaitForServiceInput --> PrintServiceHelp : E_HELP
+PrintServiceHelp --> WaitForServiceInput : E_HELP_PRINTED
+
+WaitForServiceInput --> WaitForServiceInput : E_NON_VALID_INPUT
+WaitForServiceInput --> CheckOperationMode : E_USER
+
+WaitForServiceInput --> AskNewPlantInfo : E_ADD
+AskNewPlantInfo --> WaitForServiceInput : E_NEW_PLANT_SAVED
+
+WaitForServiceInput --> AskForNewActivePlant : E_CHANGE
+AskForNewActivePlant --> WaitForServiceInput : E_CHANGE_ACTIVE_PLANT
+
+WaitForServiceInput --> UpdateServiceSystemInfo : E_UPDATE
+UpdateServiceSystemInfo --> WaitForServiceInput : E_SYSTEM_INFO_UPDATED
+
+WaitForServiceInput --> ServiceToggleHeater : E_HEATER
+ServiceToggleHeater --> WaitForServiceInput : E_HEATER_TOGGLED
+ServiceToggleHeater --> Error : E_HEATER_ERROR
+
+WaitForServiceInput --> ServiceTogglePump : E_PUMP
+ServiceTogglePump --> WaitForServiceInput : E_PUMP_TOGGLED
+ServiceTogglePump --> Error : E_PUMP_ERROR
+
+WaitForServiceInput --> ServiceToggleLight : E_LIGHT
+ServiceToggleLight --> WaitForServiceInput : E_LIGHT_TOGGLED
+ServiceToggleLight --> Error : E_LIGHT_ERROR
+
+WaitForServiceInput --> ServiceWaterPlant : E_WATER
+ServiceWaterPlant --> WaitForServiceInput : E_WATERED_PLANT
+ServiceWaterPlant --> Error : E_WATERING_ERROR
+
+Error --> CheckOperationMode : E_RESOLVE_ERROR
+
+@enduml

@@ -1,4 +1,0 @@
-Log file from: 1650_01022020
-Current active plant is: test
-STATUS: 16:50 - 10 - Heater state: on
-STATUS: 16:50 - Service mode entered.

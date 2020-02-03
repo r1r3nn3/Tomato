@@ -1,3 +1,0 @@
-Log file from: 1549_01022020
-Current active plant is: test
-STATUS: 15:49 - 10 - Heater state: on

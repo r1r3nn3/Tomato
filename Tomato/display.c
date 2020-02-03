@@ -119,7 +119,6 @@ void DSPprintSeperator(){
 void DSPshow(const char *text)
 {
     printf("## %-" DISPLAY_SIZE_STR "s ##\n", text);
-    printf("\n");
 }
 
 

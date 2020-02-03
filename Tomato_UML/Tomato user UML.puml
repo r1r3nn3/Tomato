@@ -1,0 +1,48 @@
+@startuml
+
+title Tomato - The Automatic Greenhouse
+
+[*] --> Initialise : E_START / TAGinitialise()
+Initialise --> CheckOperationMode : E_CONTINEU
+
+CheckOperationMode --> CheckTimeToPass : E_USER
+
+Error --> CheckOperationMode : E_RESOLVE_ERROR
+
+CheckTimeToPass --> PassTime : E_PASS_TIME
+CheckTimeToPass --> CheckLightState : E_DONT_PASS_TIME
+PassTime --> CheckLightState : E_TIME_PASSED
+PassTime : TimeToPass -= x;
+
+CheckLightState --> ToggleLight : E_LIGHT_TOGGLE
+ToggleLight --> CheckLightState : E_LIGHT_TOGGLED
+CheckLightState --> Error : E_LIGHT_ERROR
+CheckLightState --> CheckHeaterState : E_LIGHT_STATE_OK
+
+CheckWaterLevel --> WaterPlant : E_WATER_PLANT
+WaterPlant --> CheckWaterLevel : E_WATERED_PLANT
+CheckWaterLevel --> Error : E_WATERING_ERROR
+CheckWaterLevel --> CheckMoreTimeToPass : E_PLANT_WATER_OK
+
+CheckHeaterState --> ToggleHeater : E_HEATER_TOGGLE
+ToggleHeater --> CheckHeaterState : E_HEATER_TOGGLED
+CheckHeaterState --> Error : E_HEATER_ERROR
+CheckHeaterState --> CheckWaterLevel : E_HEATER_STATE_OK
+
+CheckMoreTimeToPass --> CheckTimeToPass : E_TIME_TO_PASS
+CheckMoreTimeToPass --> WaitForUserInput : E_NO_TIME_TO_PASS
+
+WaitForUserInput --> WaitForUserInput : E_NON_VALID_INPUT
+
+WaitForUserInput --> IncreaseTime : E_TIME
+IncreaseTime --> CheckTimeToPass : E_INCREASE_TIME
+
+WaitForUserInput --> PrintUserHelp : E_HELP
+PrintUserHelp --> WaitForUserInput : E_HELP_PRINTED
+
+WaitForUserInput --> UpdateSystemInfo : E_UPDATE
+UpdateSystemInfo --> WaitForUserInput : E_SYSTEM_INFO_UPDATED
+
+WaitForUserInput --> CheckOperationMode : E_SERVICE
+
+@enduml

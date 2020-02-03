@@ -1,4 +1,0 @@
-Log file from: 1641_01022020
-Current active plant is: test
-ERROR: 16:41 - S_NO
-ERROR: 16:41 - S_NO in eventHandler: 0

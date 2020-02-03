@@ -228,7 +228,7 @@ event_e generateEvent(void){
         evnt = WCwateringCheck();
         static bool watered = false;
         if(evnt == E_WATER_PLANT && watered){
-            evnt = E_WATER_ERROR;
+            evnt = E_WATERING_ERROR;
         }
         watered = false;
         break;
@@ -450,9 +450,9 @@ event_e generateEvent(void){
 
         DSPshow("Please enter the maximum temperature.");
         while (1) {
-            numberBuffer = KYBgetint(PLANT_MAX_TEMP_MAX);
+            numberBuffer = KYBgetint(PLANT_MAX_TEMP_MAX + 1);
 
-            if(numberBuffer > PLANT_MAX_TEMP_MAX || numberBuffer < 0){
+            if(numberBuffer > PLANT_MAX_TEMP_MAX | numberBuffer < 0){
                 DSPshow("Try again.");
             }else{
                 break;
@@ -462,9 +462,9 @@ event_e generateEvent(void){
 
         DSPshow("Please enter the minimum temperature.");
         while (1) {
-            numberBuffer = KYBgetint(PLANT_MAX_TEMP_MIN);
+            numberBuffer = KYBgetint(PLANT_MAX_TEMP_MIN + 1);
 
-            if(numberBuffer > PLANT_MAX_TEMP_MIN || numberBuffer < 0 || numberBuffer > addPlant.tempMax){
+            if(numberBuffer > PLANT_MAX_TEMP_MIN | numberBuffer < 0 | numberBuffer > addPlant.tempMax){
                 DSPshow("Try again.");
             }else{
                 break;
@@ -474,7 +474,7 @@ event_e generateEvent(void){
 
         DSPshow("Please enter the maximum water level.");
         while (1) {
-            numberBuffer = KYBgetint(PLANT_MAX_WATER_LEVEL);
+            numberBuffer = KYBgetint(PLANT_MAX_WATER_LEVEL + 1);
 
             if(numberBuffer > PLANT_MAX_WATER_LEVEL || numberBuffer < 0){
                 DSPshow("Try again.");
@@ -486,7 +486,7 @@ event_e generateEvent(void){
 
         DSPshow("Please enter the light hours.");
         while (1) {
-            numberBuffer = KYBgetint(PLANT_MAX_LIGHT_HOURS);
+            numberBuffer = KYBgetint(PLANT_MAX_LIGHT_HOURS + 1);
 
             if(numberBuffer > PLANT_MAX_LIGHT_HOURS || numberBuffer < 0){
                 DSPshow("Try again.");
@@ -500,7 +500,8 @@ event_e generateEvent(void){
 
 
     case(S_ERROR):
-        DSPshowSystemError("Error state reached.");
+        strcat(errorMessage, " - Error state reached.");
+        DSPshowSystemError(errorMessage);
         DSPshow("Press the enter key to reset the system.");
         KYBgetString();
         TAGinitialise();
@@ -540,6 +541,7 @@ void eventHandler(event_e event){
         strcat(displayBuffer, numberBuffer);
         DSPshowSystemError(displayBuffer);
         nextState = S_START;
+        KYBgetString();
         break;
 
 
@@ -647,7 +649,7 @@ void eventHandler(event_e event){
             nextState = S_CHECK_MORE_TIME_TO_PASS;
             break;
 
-        case(E_WATER_ERROR):
+        case(E_WATERING_ERROR):
             nextState = S_ERROR;
             strcpy(errorMessage, "Watering error");
             break;
@@ -701,6 +703,7 @@ void eventHandler(event_e event){
             break;
 
         default:
+            nextState = currentState;
             break;
         }
         break;
@@ -754,6 +757,10 @@ void eventHandler(event_e event){
 
         case(E_UPDATE):
             nextState = S_UPDATE_SERVICE_SYSTEM_INFO;
+            break;
+
+        case(E_NON_VALID_INPUT):
+            nextState = currentState;
             break;
 
         default:

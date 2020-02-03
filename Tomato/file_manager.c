@@ -264,7 +264,7 @@ const char * FMgetPlantName(int plantIndex){
 /// Used to save a plant to the plants.csv file.
 /// @param[in] newPlant A struc containing the information that will be saved in plants.csv.
 /// @post A new plant will be saved in the plants.csv file.
-/// @return A event that the #newPlant has been saved to the plants.csv file.
+/// @return A event that the newPlant has been saved to the plants.csv file.
 event_e FMsaveNewPlant(plant_t newPlant){
     plantFile = fopen(plantFileLocation, "r+");
     fseek(plantFile, 0, SEEK_END);

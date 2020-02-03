@@ -1,3 +1,0 @@
-Log file from: 1530_01022020
-Current active plant is: test
-ERROR: 15:30 - Error state reached.

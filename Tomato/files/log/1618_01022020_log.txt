@@ -1,7 +1,0 @@
-Log file from: 1618_01022020
-Current active plant is: test
-STATUS: 16:18 - 10 - Heater state: on
-STATUS: 18:18 - 9 - Watering done
-STATUS: 00:18 - Light state: on
-STATUS: 05:48 - 10 - Watering done
-STATUS: 08:08 - Light state: off

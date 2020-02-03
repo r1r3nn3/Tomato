@@ -2,7 +2,7 @@
 
 title Tomato - The Automatic Greenhouse
 
-[*] --> Initialise : E_START / TAGinitialise()
+[*] --> Initialise : E_START
 Initialise --> CheckOperationMode : E_CONTINEU
 
 CheckOperationMode --> CheckTimeToPass : E_USER
@@ -10,21 +10,19 @@ CheckOperationMode --> CheckTimeToPass : E_USER
 CheckTimeToPass --> PassTime : E_PASS_TIME
 CheckTimeToPass --> CheckLightState : E_DONT_PASS_TIME
 PassTime --> CheckLightState : E_TIME_PASSED
-PassTime : TimeToPass -= x;
 
 CheckLightState --> ToggleLight : E_LIGHT_TOGGLE
 ToggleLight --> CheckLightState : E_LIGHT_TOGGLED
 CheckLightState --> Error : E_LIGHT_ERROR
 CheckLightState --> CheckHeaterState : E_LIGHT_STATE_OK
 
-
 CheckHeaterState --> ToggleHeater : E_HEATER_TOGGLE
 ToggleHeater --> CheckHeaterState : E_HEATER_TOGGLED
 CheckHeaterState --> Error : E_HEATER_ERROR
 CheckHeaterState --> CheckWaterLevel : E_HEATER_STATE_OK
 
-CheckWaterLevel --> WaterPlant : E_PLANT_WATER
-WaterPlant --> CheckWaterLevel : E_PLANT_WATERED
+CheckWaterLevel --> WaterPlant : E_WATER_PLANT
+WaterPlant --> CheckWaterLevel : E_WATERED_PLANT
 CheckWaterLevel --> Error : E_WATERING_ERROR
 CheckWaterLevel --> CheckMoreTimeToPass : E_PLANT_WATER_OK
 
@@ -73,7 +71,10 @@ ServiceToggleLight --> WaitForServiceInput : E_LIGHT_TOGGLED
 ServiceToggleLight --> Error : E_LIGHT_ERROR
 
 WaitForServiceInput --> ServiceWaterPlant : E_WATER
-ServiceWaterPlant --> WaitForServiceInput : E_PLANT_WATERED
-ServiceWaterPlant --> Error : E_WATER_ERROR
+ServiceWaterPlant --> WaitForServiceInput : E_WATERED_PLANT
+ServiceWaterPlant --> Error : E_WATERING_ERROR
+
+WaitForServiceInput --> UpdateServiceSystemInfo : E_UPDATE
+UpdateServiceSystemInfo --> WaitForServiceInput : E_SYSTEM_INFO_UPDATED
 
 @enduml

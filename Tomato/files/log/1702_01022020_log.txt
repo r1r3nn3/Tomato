@@ -1,7 +1,0 @@
-Log file from: 1702_01022020
-Current active plant is: test
-STATUS: 17:02 - 10 - Heater state: on
-STATUS: 17:02 - 0 - Watering done
-STATUS: 17:02 - Service mode entered.
-STATUS: 17:02 - Active plant changed to: Test123
-STATUS: 17:02 - Active plant changed to: Strawberry

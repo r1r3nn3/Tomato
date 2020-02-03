@@ -1,4 +1,0 @@
-Log file from: 1821_01022020
-Current active plant is: Tomato
-STATUS: 18:21 - 10 - Heater state: on
-STATUS: 18:21 - 0 - Watering done
