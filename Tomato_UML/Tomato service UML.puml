@@ -1,6 +1,6 @@
 @startuml
 
-title Tomato - The Automatic Greenhouse
+title Tomato - The Automatic Greenhouse, Service mode
 
 [*] --> Initialise : E_START / TAGinitialise()
 Initialise --> CheckOperationMode : E_CONTINEU

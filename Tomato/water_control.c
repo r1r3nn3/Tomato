@@ -62,7 +62,7 @@ event_e WCwaterPlant(void){
 }
 
 /// This function checks if watering is required.
-/// @return A event that the plant is watered.
+/// @return A event that the plant needs water or has enough water.
 event_e WCwateringCheck(void){
     if(plantWaterLevel <= PTgetWaterLevelMax() / 3){
         // watering on sensor
